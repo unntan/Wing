@@ -10,19 +10,25 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace Wing
+namespace Wing.View
 {
     /// <summary>
-    /// MainWindow.xaml の相互作用ロジック
+    /// CategoryMenu.xaml の相互作用ロジック
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class CategoryMenu : Window
     {
-        public MainWindow()
+        public CategoryMenu()
         {
             InitializeComponent();
         }
+
+        private void InvoiceClick(object sender, RoutedEventArgs e)
+        {
+            Invoice invoice = new Invoice();
+            invoice.Show();
+        }
+
     }
 }

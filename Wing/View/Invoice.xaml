@@ -1,0 +1,110 @@
+﻿<Window x:Class="Wing.View.Invoice"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Wing.View"
+        mc:Ignorable="d"
+        Title="請求書作成" Height="600" Width="1200">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="20"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="150"/>
+            <ColumnDefinition Width="50"/>
+            <ColumnDefinition Width="150"/>
+            <ColumnDefinition Width="100"/>
+            <ColumnDefinition Width="600"/>
+        </Grid.ColumnDefinitions>
+
+        <Label Grid.Row="1" Grid.Column="0"  VerticalAlignment="Center" HorizontalAlignment="Right">年</Label>
+        <TextBox Name="YearText" Grid.Row="1" Grid.Column="1" Width="100" Height="30" HorizontalAlignment="Left"/>
+
+        <Label Grid.Row="1" Grid.Column="2"  VerticalAlignment="Center" HorizontalAlignment="Right">月</Label>
+        <TextBox Name="MonthText" Grid.Row="1" Grid.Column="3" Width="100" Height="30" HorizontalAlignment="Left"/>
+
+        <Label Grid.Row="2" Grid.Column="0"  VerticalAlignment="Center" HorizontalAlignment="Right">会社名</Label>
+        <TextBox Name="KaisyaText" Grid.Row="2" Grid.Column="1" Width="150" Height="30" HorizontalAlignment="Left" IsEnabled="False"/>
+        <TextBox Name="KaisyaID" Grid.Row="2" Grid.Column="1" Visibility="Hidden"/>
+
+        <Label Grid.Row="2" Grid.Column="2"  VerticalAlignment="Center" HorizontalAlignment="Right">担当者</Label>
+        <TextBox Name="TantoText" Grid.Row="2" Grid.Column="3" Width="150" Height="30" HorizontalAlignment="Left" IsEnabled="False"/>
+        <TextBox Name="TantoID" Grid.Row="2" Grid.Column="3" Visibility="Hidden"/>
+
+        <Button Name="SelectCompany" Grid.Row="3" Grid.Column="1" Click="SelectCompany_Click" Height="30" Width="80">会社選択</Button>
+        <Button Name="SelectManager" Grid.Row="3" Grid.Column="3" Click="SelectCompany_Click" Height="30" Width="80">担当者選択</Button>
+
+        <Label Grid.Row="4" Grid.Column="0" Height="30" VerticalAlignment="Center" HorizontalAlignment="Right" Visibility="Hidden">項番</Label>
+        <TextBox Name="NoText" Grid.Row="4" Grid.Column="1" Width="100" Height="30" HorizontalAlignment="Left" IsReadOnly="True" Background="LightGray" Visibility="Hidden"/>
+
+        <Label Grid.Row="4" Grid.Column="0" Height="30" VerticalAlignment="Center" HorizontalAlignment="Right">請求日</Label>
+        <DatePicker Name="InvoiceDateText" Grid.Row="4" Grid.Column="1" Height="30" Width="150" HorizontalAlignment="Left"/>
+
+        <Label Grid.Row="5" Grid.Column="0" Height="30" VerticalAlignment="Center" HorizontalAlignment="Right">現場名</Label>
+        <TextBox Name="GenbaMeiText" Grid.Row="5" Grid.Column="1" Width="150" Height="30" HorizontalAlignment="Left"/>
+
+        <Label Grid.Row="6" Grid.Column="0" Height="30" VerticalAlignment="Center" HorizontalAlignment="Right">数量(単位)</Label>
+        <TextBox Name="SuryoText" Grid.Row="6" Grid.Column="1" Width="150" Height="30" HorizontalAlignment="Left" />
+        <TextBox Name="TaniText" Grid.Row="6" Grid.Column="2" Width="30" Height="30" HorizontalAlignment="Center"/>
+
+        <Label Grid.Row="7" Grid.Column="0" Height="30" VerticalAlignment="Center" HorizontalAlignment="Right">単価(税)</Label>
+        <TextBox Name="TankaText" Grid.Row="7" Grid.Column="1" Width="150" Height="30" HorizontalAlignment="Left"/>
+        <CheckBox Name="InTax" Grid.Row="7" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" Width="20" ToolTip="チェックを入れると税込みで金額を算出します。"></CheckBox>
+
+        <Label Grid.Row="8" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right">備考</Label>
+        <TextBox Name="BikoText" Grid.Row="8" Grid.Column="1" Width="150" Height="60" AcceptsReturn="True" TextWrapping="Wrap" VerticalContentAlignment="Top" HorizontalAlignment="Left"/>
+
+        <DataGrid Name="InvoiceList" Grid.Row="1" Grid.Column="5" Grid.RowSpan="8" Height="400" Width="600" CanUserAddRows="False" IsReadOnly="True" MouseDoubleClick="InvoiceList_MouseDoubleClick">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="No" Width="30" Visibility="Hidden" Binding="{Binding No}"/>
+                <DataGridTextColumn Header="年" Width="30" Visibility="Hidden" Binding="{Binding Year}"/>
+                <DataGridTextColumn Header="月" Width="30" Visibility="Hidden" Binding="{Binding Month}"/>
+                <DataGridTextColumn Header="請求先企業" Width="30" Visibility="Hidden" Binding="{Binding ToCompany}"/>
+                <DataGridTextColumn Header="請求先担当" Width="30" Visibility="Hidden" Binding="{Binding Manager}"/>
+                <DataGridTextColumn Header="現場名" Width="150" Binding="{Binding GenbaMei}"/>
+                <DataGridTextColumn Header="数量" Width="50" Binding="{Binding Suryo}"/>
+                <DataGridTextColumn Header="単位" Width="50" Binding="{Binding Tani}"/>
+                <DataGridTextColumn Header="単価" Width="50" Binding="{Binding Tanka}"/>
+                <DataGridTextColumn Header="内税" Width="50" Binding="{Binding InTax}"/>
+                <DataGridTextColumn Header="金額" Width="100" Binding="{Binding Kingaku}"/>
+                <DataGridTextColumn Header="備考" Width="320" Binding="{Binding Biko}"/>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <Grid Name="ButtonGrid" Grid.Row="9" Grid.Column="5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="10"/>
+                <RowDefinition Height="70"/>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="150"/>
+                <ColumnDefinition Width="150"/>
+            </Grid.ColumnDefinitions>
+
+            <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Top">保存パス</Label>
+            <TextBox Name="SavePath" Width="130" Height="30" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Top"/>
+            <Button Name="SavePathSelect" Grid.Row="1" Grid.Column="1" Width="75" Click="SavePath_Click" Height="30" VerticalAlignment="Top">保存先選択</Button>
+            <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Bottom">ファイル名</Label>
+            <TextBox Name="SaveFileName" Width="130" Height="30" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
+            <Button Name="Save" Grid.Row="1" Grid.Column="2" Click="Save_Click" Height="60" Width="120">データ保存</Button>
+            <Button Name="Output" Grid.Row="1" Grid.Column="3" Click="Output_Click" Height="60" Width="120">請求書出力</Button>
+        </Grid>
+
+        <Button Name="Accept" Grid.Row="9" Grid.Column="1" Click="Accept_Click" Height="60" Width="120">リストに追加</Button>
+
+    </Grid>
+</Window>
