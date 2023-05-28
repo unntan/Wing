@@ -348,6 +348,18 @@ namespace Wing.View
             SelectCompany selectCompany = new SelectCompany(this);
             selectCompany.Show();
         }
+
+        private void SelectManager_Click(object sender, RoutedEventArgs e)
+        {
+            SelectManager selectManager = new SelectManager(this,int.Parse(KaisyaID.Text),KaisyaText.Text);
+            selectManager.Show();
+        }
+
+        private void KaisyaText_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            TantoID.Text = "";
+            TantoText.Text = "";
+        }
     }
 
 }

@@ -1,7 +1,5 @@
-﻿using MySql.Data.MySqlClient;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,29 +18,34 @@ using Wing.Other;
 namespace Wing.View
 {
     /// <summary>
-    /// SelectCompany.xaml の相互作用ロジック
+    /// SelectManager.xaml の相互作用ロジック
     /// </summary>
-    public partial class SelectCompany : Window
+    public partial class SelectManager : Window
     {
+        public int selectedCompanyId = 0;
+        public string selectedCompanyName = "";
         Invoice parentInvoice = null;
 
-        CompanyListWindowData companyListWindowData
-        {
-            get { return DataContext as CompanyListWindowData; }
-        }
+        ManagerListWindowData managerListWindowData => DataContext as ManagerListWindowData;
 
-        public SelectCompany(Invoice invoice)
+
+        public SelectManager(Invoice invoice, int companyId, string companyName)
         {
             InitializeComponent();
+            selectedCompanyId = companyId;
+            selectedCompanyName = companyName;
             parentInvoice = invoice;
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            companyListWindowData.LoadCompanies();
+            SelectedCompany.Content = selectedCompanyName;
+            SelectedCompanyId.Text = selectedCompanyId.ToString();
+
+            managerListWindowData.LoadManager(selectedCompanyId);
         }
 
-        private void CompanyList_MouseDown(object sender, MouseButtonEventArgs e)
+        private void ManagerList_MouseDown(object sender, MouseButtonEventArgs e)
         {
             var common = new Common();
 
@@ -50,7 +53,7 @@ namespace Wing.View
             var dataGrid = sender as DataGrid;
             var point = e.GetPosition(dataGrid);
 
-            var row = common.GetDataGridObject<DataGridRow>(dataGrid,point);
+            var row = common.GetDataGridObject<DataGridRow>(dataGrid, point);
 
             if (row == null)
             {
@@ -59,7 +62,7 @@ namespace Wing.View
 
             var rowIndex = row.GetIndex();
 
-            var cell = common.GetDataGridObject<DataGridCell>(dataGrid,point);
+            var cell = common.GetDataGridObject<DataGridCell>(dataGrid, point);
 
             if (cell == null)
             {
@@ -68,18 +71,17 @@ namespace Wing.View
 
             DataGridRow dataGridRow = dataGrid.ItemContainerGenerator.ContainerFromIndex(rowIndex) as DataGridRow;
 
-            CompanyListData companyListData = dataGridRow.Item as CompanyListData;
+            ManagerListData managerListData = dataGridRow.Item as ManagerListData;
 
-            SelectedCompanyID.Text = Convert.ToString(companyListData.Id);
-            SelectedCompany.Text = companyListData.Name;
+            SelectedManagerID.Text = Convert.ToString(managerListData.Id);
+            SelectedManagerName.Text = managerListData.Name;
         }
 
         private void Comp_Click(object sender, RoutedEventArgs e)
         {
-            parentInvoice.KaisyaID.Text = SelectedCompanyID.Text;
-            parentInvoice.KaisyaText.Text = SelectedCompany.Text;
+            parentInvoice.TantoText.Text = SelectedManagerName.Text;
+            parentInvoice.TantoID.Text = SelectedManagerID.ToString();
             Close();
         }
-
     }
 }

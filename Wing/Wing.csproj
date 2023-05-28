@@ -124,12 +124,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Logic\ManagerListWindowData.cs" />
     <Compile Include="Model\Company.cs" />
     <Compile Include="Logic\CompanyListWindowData.cs" />
     <Compile Include="Model\CompanyListData.cs" />
     <Compile Include="Model\Invoice.cs" />
     <Compile Include="Model\LoginInformation.cs" />
     <Compile Include="Model\Manager.cs" />
+    <Compile Include="Model\ManagerListData.cs" />
     <Compile Include="Other\ViewModelBase.cs" />
     <Compile Include="ViewModel\CompanyViewModel.cs" />
     <Compile Include="ViewModel\InvoiceViewModel.cs" />
@@ -142,6 +144,9 @@
     </Compile>
     <Compile Include="View\SelectCompany.xaml.cs">
       <DependentUpon>SelectCompany.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\SelectManager.xaml.cs">
+      <DependentUpon>SelectManager.xaml</DependentUpon>
     </Compile>
     <Page Include="Start.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -165,6 +170,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\SelectCompany.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\SelectManager.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
