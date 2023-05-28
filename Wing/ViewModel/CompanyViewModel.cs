@@ -74,8 +74,5 @@ namespace Wing.ViewModel
                 OnPropertyChanged();
             }
         }
-
-        // DataGrid表示用企業リスト
-        public ObservableCollection<CompanyListWindowData> Companies { get; set; } = new ObservableCollection<CompanyListWindowData>();
     }
 }

@@ -125,7 +125,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Model\Company.cs" />
-    <Compile Include="Model\CompanyListWindowData.cs" />
+    <Compile Include="Logic\CompanyListWindowData.cs" />
+    <Compile Include="Model\CompanyListData.cs" />
     <Compile Include="Model\Invoice.cs" />
     <Compile Include="Model\LoginInformation.cs" />
     <Compile Include="Model\Manager.cs" />

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Wing.Other
 {
-    class ViewModelBase : INotifyPropertyChanged, IDataErrorInfo
+    public class ViewModelBase : INotifyPropertyChanged, IDataErrorInfo
     {
         public event PropertyChangedEventHandler PropertyChanged;
 

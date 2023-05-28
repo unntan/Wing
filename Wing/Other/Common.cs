@@ -5,6 +5,9 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace Wing.Other
 {
@@ -45,6 +48,33 @@ namespace Wing.Other
                     }
                 }
             }
+        }
+
+        /**
+         * @brief 引数の位置のDataGridのオブジェクトを取得します。
+         * 
+         * @param [in] dataGrid データグリッド
+         * @param [in] point 位置
+         * @return DataGridのオブジェクト
+         */
+        public T GetDataGridObject<T>(DataGrid dataGrid, Point point)
+        {
+            T result = default(T);
+            var hitResultTest = VisualTreeHelper.HitTest(dataGrid, point);
+            if (hitResultTest != null)
+            {
+                var visualHit = hitResultTest.VisualHit;
+                while (visualHit != null)
+                {
+                    if (visualHit is T)
+                    {
+                        result = (T)(object)visualHit;
+                        break;
+                    }
+                    visualHit = VisualTreeHelper.GetParent(visualHit);
+                }
+            }
+            return result;
         }
 
     }

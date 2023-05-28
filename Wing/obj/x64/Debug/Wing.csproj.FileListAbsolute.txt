@@ -44,3 +44,5 @@ D:\00_project\07_Wing\Wing\obj\x64\Debug\Wing.csproj.CoreCompileInputs.cache
 D:\00_project\07_Wing\Wing\obj\x64\Debug\Wing.csproj.CopyComplete
 D:\00_project\07_Wing\Wing\obj\x64\Debug\Wing.exe
 D:\00_project\07_Wing\Wing\obj\x64\Debug\Wing.pdb
+D:\00_project\07_Wing\Wing\obj\x64\Debug\Wing.csproj.AssemblyReference.cache
+D:\00_project\07_Wing\Wing\obj\x64\Debug\GeneratedInternalTypeHelper.g.cs
