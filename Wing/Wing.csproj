@@ -141,6 +141,7 @@
     </ApplicationDefinition>
     <Compile Include="Logic\InvoiceLogic.cs" />
     <Compile Include="Logic\ManagerListWindowData.cs" />
+    <Compile Include="Logic\TaxLogic.cs" />
     <Compile Include="Model\Company.cs" />
     <Compile Include="Logic\CompanyListWindowData.cs" />
     <Compile Include="Model\CompanyListData.cs" />
@@ -148,12 +149,17 @@
     <Compile Include="Model\LoginInformation.cs" />
     <Compile Include="Model\Manager.cs" />
     <Compile Include="Model\ManagerListData.cs" />
+    <Compile Include="Model\Tax.cs" />
     <Compile Include="Other\ViewModelBase.cs" />
     <Compile Include="ViewModel\CompanyViewModel.cs" />
     <Compile Include="ViewModel\InvoiceViewModel.cs" />
     <Compile Include="ViewModel\ManagerViewModel.cs" />
+    <Compile Include="ViewModel\TaxViewModel.cs" />
     <Compile Include="View\CategoryMenu.xaml.cs">
       <DependentUpon>CategoryMenu.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ChangeTax.xaml.cs">
+      <DependentUpon>ChangeTax.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Invoice.xaml.cs">
       <DependentUpon>Invoice.xaml</DependentUpon>
@@ -178,6 +184,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="View\CategoryMenu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ChangeTax.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

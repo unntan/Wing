@@ -62,11 +62,13 @@ namespace Wing.View
                 System.Windows.MessageBox.Show("【単価】数字を正しく入力してください。", "エラー", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
+            double tax = new TaxLogic().GetTax();
+
             // 画面の情報から金額を算出する
             if ((bool)InTax.IsChecked)
             {
                 Kingaku = Double.Parse(SuryoText.Text) * Double.Parse(TankaText.Text);
-                Kingaku = Math.Round(Kingaku * 1.08);
+                Kingaku = Kingaku + Math.Round(Kingaku * tax);
             }
             else
             {
@@ -168,6 +170,9 @@ namespace Wing.View
                 Range ToManager = sheet.Cells[2, 2];
                 ToManager.Value = TantoText.Text;
 
+                // 消費税
+                double tax = new TaxLogic().GetTax();
+
                 // 税算出用
                 double sumOutTax = 0;
 
@@ -194,15 +199,15 @@ namespace Wing.View
                         Range Suryo = sheet.Cells[i, 7];
                         Suryo.Value = lst[i - 11].Suryo.ToString() + lst[i - 11].Tani;
 
-                        // 税判定
-                        if (!lst[i - 11].InTax)
-                        {
-                            sumOutTax += sheet.Cells[i, 8];
-                        }
-
                         // 単価
                         Range Tanka = sheet.Cells[i, 8];
                         Tanka.Value = lst[i - 11].Tanka;
+
+                        // 税判定
+                        if (!lst[i - 11].InTax)
+                        {
+                            sumOutTax += lst[i - 11].Tanka;
+                        }
 
                         // 金額
                         Range Kingaku = sheet.Cells[i, 9];
@@ -225,11 +230,11 @@ namespace Wing.View
 
                 // 消費税
                 Range Tax = sheet.Cells[24, 9];
-                Tax.Value = sumOutTax / 10;
+                Tax.Value = sumOutTax * tax;
 
                 // 合計金額
                 Range allSum = sheet.Cells[25, 9];
-                allSum.Value = SumMoney + sumOutTax;
+                allSum.Value = SumMoney + sumOutTax * tax;
 
                 // 請求日
                 Range InvoiceDate = sheet.Cells[2, 10];
@@ -428,6 +433,11 @@ namespace Wing.View
             TantoText.Text = "";
         }
 
+        /// <summary>
+        /// 画面に入力された会社ID、担当者ID、年月から既に登録されているデータをグリッドに表示する
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void GetInvoiceData_Click(object sender, RoutedEventArgs e)
         {
             ObservableCollection<Model.Invoice> invoices = new ObservableCollection<Model.Invoice>();
@@ -442,7 +452,6 @@ namespace Wing.View
             {
                 for (int i = 0; i < invoices.Count; i++)
                 {
-
                     invoiceViewModel.No = invoices[i].No;
                     invoiceViewModel.Year = invoices[i].Year;
                     invoiceViewModel.Month = invoices[i].Month;
@@ -460,7 +469,6 @@ namespace Wing.View
                 }
 
                 InvoiceList.ItemsSource = invoiceViewModels;
-
             }
             else
             {

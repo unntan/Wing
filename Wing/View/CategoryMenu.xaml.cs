@@ -30,5 +30,10 @@ namespace Wing.View
             invoice.Show();
         }
 
+        private void ChangeTax_Click(object sender, RoutedEventArgs e)
+        {
+            ChangeTax changeTax = new ChangeTax();
+            changeTax.Show();
+        }
     }
 }

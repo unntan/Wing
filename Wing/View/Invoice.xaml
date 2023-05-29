@@ -67,7 +67,7 @@
         <Label Grid.Row="8" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right">備考</Label>
         <TextBox Name="BikoText" Grid.Row="8" Grid.Column="1" Width="150" Height="60" AcceptsReturn="True" TextWrapping="Wrap" VerticalContentAlignment="Top" HorizontalAlignment="Left"/>
 
-        <DataGrid Name="InvoiceList" Grid.Row="1" Grid.Column="5" Grid.RowSpan="8" Height="400" Width="600" CanUserAddRows="False" IsReadOnly="True" MouseDoubleClick="InvoiceList_MouseDoubleClick">
+        <DataGrid Name="InvoiceList" Grid.Row="1" Grid.Column="5" Grid.RowSpan="8" Height="400" Width="600" CanUserAddRows="False" AutoGenerateColumns="False" IsReadOnly="True" MouseDoubleClick="InvoiceList_MouseDoubleClick">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="No" Width="30" Visibility="Hidden" Binding="{Binding No}"/>
                 <DataGridTextColumn Header="年" Width="30" Visibility="Hidden" Binding="{Binding Year}"/>
@@ -102,8 +102,8 @@
             <Button Name="SavePathSelect" Grid.Row="1" Grid.Column="1" Width="75" Click="SavePath_Click" Height="30" VerticalAlignment="Top">保存先選択</Button>
             <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Bottom" VerticalContentAlignment="Center">ファイル名</Label>
             <TextBox Name="SaveFileName" Width="130" Height="30" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
-            <Button Name="Save" Grid.Row="1" Grid.Column="2" Click="Save_Click" Height="60" Width="120" ToolTip="リストに表示されているデータをデータベースに保存します。">データ保存</Button>
-            <Button Name="Output" Grid.Row="1" Grid.Column="3" Click="Output_Click" Height="60" Width="120">請求書出力</Button>
+            <Button Name="Save" Grid.Row="1" Grid.Column="3" Click="Save_Click" Height="60" Width="120" ToolTip="リストに表示されているデータをデータベースに保存します。">データ保存</Button>
+            <Button Name="Output" Grid.Row="1" Grid.Column="2" Click="Output_Click" Height="60" Width="120">請求書出力</Button>
         </Grid>
 
         <Button Name="Accept" Grid.Row="9" Grid.Column="1" Click="Accept_Click" Height="60" Width="120" ToolTip="「現場名」「数量」「単位」「備考」を画面右のリストに追加します。">リストに追加</Button>
