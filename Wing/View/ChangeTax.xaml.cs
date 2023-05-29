@@ -79,6 +79,10 @@ namespace Wing.View
 
                     MessageBox.Show("税率を変更しました。");
                 }
+                else
+                {
+                    MessageBox.Show("税率を確認して再度登録してください。");
+                }
             }
         }
 
