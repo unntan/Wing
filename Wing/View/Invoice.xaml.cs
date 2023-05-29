@@ -16,6 +16,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Wing.Logic;
 using Wing.Other;
 using Wing.ViewModel;
 using Window = System.Windows.Window;
@@ -120,7 +121,7 @@ namespace Wing.View
         /// <returns>画面に表示するデータ</returns>
         private InvoiceViewModel CreateData(int prefix, double kingaku)
         {
-            var dataList = new InvoiceViewModel { No = prefix + 1, Year = int.Parse(YearText.Text), Month = int.Parse(MonthText.Text), ToCompany = KaisyaText.Text, Manager = TantoText.Text, GenbaMei = GenbaMeiText.Text, Suryo = Double.Parse(SuryoText.Text), Tanka = Double.Parse(TankaText.Text), InTax = (bool)InTax.IsChecked, Tani = TaniText.Text, Kingaku = (int)Math.Round(kingaku), Biko = BikoText.Text };
+            var dataList = new InvoiceViewModel { No = prefix + 1, Year = int.Parse(YearText.Text), Month = int.Parse(MonthText.Text), ToCompany = int.Parse(KaisyaID.Text), Manager = int.Parse(TantoID.Text), GenbaMei = GenbaMeiText.Text, Suryo = Double.Parse(SuryoText.Text), Tanka = Double.Parse(TankaText.Text), InTax = (bool)InTax.IsChecked, Tani = TaniText.Text, Kingaku = (int)Math.Round(kingaku), Biko = BikoText.Text };
             return dataList;
         }
 
@@ -130,94 +131,124 @@ namespace Wing.View
         /// <param name="e"></param>
         private void Output_Click(object sender, RoutedEventArgs e)
         {
-            string fileName = @"C:\WingTemp\InvoiceTemp.xlsx";
-
-            string folderName = @"C:\WingTemp";
-
-            // エクセルファイルを配置するフォルダがあるかを確認する
-            if (!Directory.Exists(folderName))
-            {
-                Directory.CreateDirectory(folderName);
-            }
-
-            // テンプレートファイルが存在するかを確認する
-            if (!File.Exists(fileName))
-            {
-                File.Copy(@"Temp\InvoiceTemp.xlsx", fileName);
-            }
-
             Microsoft.Office.Interop.Excel.Application ExcelApp = new Microsoft.Office.Interop.Excel.Application();
-            ExcelApp.DisplayAlerts = false;
-            ExcelApp.Visible = false; //起動したエクセルを非表示
 
-            // エクセルを起動
-            Workbook workbook = ExcelApp.Workbooks.Open(fileName);
-
-            // シートを選択
-            Worksheet sheet = workbook.ActiveSheet;
-
-            // 会社名
-            Range ToCompany = sheet.Cells[0, 0];
-            ToCompany.Value = KaisyaText.Text;
-
-            // 担当者
-            Range ToManager = sheet.Cells[1, 1];
-            ToManager.Value = TantoText.Text;
-
-            // 合計金額用
-            int SumMoney = 0;
-
-            int cnt = 1;
-
-            for (int i = 11; i < 22; i++)
+            try
             {
-                if (cnt <= InvoiceList.Items.Count)
+                string fileName = @"C:\WingTemp\InvoiceTemp.xlsx";
+
+                string folderName = @"C:\WingTemp";
+
+                // エクセルファイルを配置するフォルダがあるかを確認する
+                if (!Directory.Exists(folderName))
                 {
-                    var lst = InvoiceList.ItemsSource.Cast<object>().ToList();
-                    var rowObj = lst[i - 11];
-
-                    // No.
-                    Range NoRange = sheet.Cells[i, 2];
-                    NoRange.Value = (InvoiceList.Columns[0].GetCellContent(rowObj) as TextBlock).Text;
-
-                    // 現場名
-                    Range SiteName = sheet.Cells[i, 3];
-                    SiteName.Value = (InvoiceList.Columns[3].GetCellContent(rowObj) as TextBlock).Text;
-
-                    // 数量 + 単位
-                    Range Suryo = sheet.Cells[i, 7];
-                    Suryo.Value = (InvoiceList.Columns[4].GetCellContent(rowObj) as TextBlock).Text + (InvoiceList.Columns[5].GetCellContent(rowObj) as TextBlock).Text;
-
-                    // 単価
-                    Range Tanka = sheet.Cells[i, 8];
-                    Tanka.Value = (InvoiceList.Columns[6].GetCellContent(rowObj) as TextBlock).Text;
-
-                    // 金額
-                    Range Kingaku = sheet.Cells[i, 9];
-                    Kingaku.Value = (InvoiceList.Columns[7].GetCellContent(rowObj) as TextBlock).Text;
-
-                    // 備考
-                    Range Biko = sheet.Cells[i, 10];
-                    Biko.Value = (InvoiceList.Columns[8].GetCellContent(rowObj) as TextBlock).Text;
-
-                    // 合計金額演算用
-                    SumMoney += Kingaku.Value;
-
-                    cnt = cnt + 1;
+                    Directory.CreateDirectory(folderName);
                 }
+
+                // テンプレートファイルが存在するかを確認する
+                if (!File.Exists(fileName))
+                {
+                    File.Copy(@"Temp\InvoiceTemp.xlsx", fileName);
+                }
+
+                ExcelApp.DisplayAlerts = false;
+                // ExcelApp.Visible = false; //起動したエクセルを非表示
+
+                // エクセルを起動
+                Workbook workbook = ExcelApp.Workbooks.Open(fileName);
+
+                // シートを選択
+                Worksheet sheet = workbook.ActiveSheet;
+
+                // 会社名
+                Range ToCompany = sheet.Cells[1, 2];
+                ToCompany.Value = KaisyaText.Text;
+
+                // 担当者
+                Range ToManager = sheet.Cells[2, 2];
+                ToManager.Value = TantoText.Text;
+
+                // 税算出用
+                double sumOutTax = 0;
+
+                // 合計金額用
+                int SumMoney = 0;
+
+                int cnt = 1;
+
+                for (int i = 11; i < 23; i++)
+                {
+                    if (cnt <= InvoiceList.Items.Count)
+                    {
+                        var lst = InvoiceList.ItemsSource.Cast<InvoiceViewModel>().ToList();
+
+                        // No.
+                        Range NoRange = sheet.Cells[i, 2];
+                        NoRange.Value = lst[i - 11].No;
+
+                        // 現場名
+                        Range SiteName = sheet.Cells[i, 3];
+                        SiteName.Value = lst[i - 11].GenbaMei;
+
+                        // 数量 + 単位
+                        Range Suryo = sheet.Cells[i, 7];
+                        Suryo.Value = lst[i - 11].Suryo.ToString() + lst[i - 11].Tani;
+
+                        // 税判定
+                        if (!lst[i - 11].InTax)
+                        {
+                            sumOutTax += sheet.Cells[i, 8];
+                        }
+
+                        // 単価
+                        Range Tanka = sheet.Cells[i, 8];
+                        Tanka.Value = lst[i - 11].Tanka;
+
+                        // 金額
+                        Range Kingaku = sheet.Cells[i, 9];
+                        Kingaku.Value = lst[i - 11].Kingaku;
+
+                        // 備考
+                        Range Biko = sheet.Cells[i, 10];
+                        Biko.Value = lst[i - 11].Biko;
+
+                        // 合計金額演算用
+                        SumMoney += Kingaku.Value;
+
+                        cnt = cnt + 1;
+                    }
+                }
+
+                // 小計
+                Range Sum = sheet.Cells[23, 9];
+                Sum.Value = SumMoney;
+
+                // 消費税
+                Range Tax = sheet.Cells[24, 9];
+                Tax.Value = sumOutTax / 10;
+
+                // 合計金額
+                Range allSum = sheet.Cells[25, 9];
+                allSum.Value = SumMoney + sumOutTax;
+
+                // 請求日
+                Range InvoiceDate = sheet.Cells[2, 10];
+                InvoiceDate.Value = InvoiceDateText.Text;
+
+                workbook.SaveCopyAs(SavePath.Text + "\\" + SaveFileName.Text);
+
+                System.Windows.MessageBox.Show("請求書を発行しました。", "お知らせ");
+
             }
-
-            // 合計金額
-            Range Sum = sheet.Cells[7, 1];
-            Sum.Value = SumMoney;
-
-            // 請求日
-            Range InvoiceDate = sheet.Cells[1, 9];
-            InvoiceDate.Value = InvoiceDateText.Text;
-
-            workbook.SaveCopyAs(SavePath.Text + "\\" + SaveFileName.Text);
-
-            System.Windows.MessageBox.Show("請求書を発行しました。", "お知らせ");
+            catch(Exception ex)
+            {
+                System.Windows.MessageBox.Show("請求書の発行に失敗しました。" + ex.Message, "お知らせ");
+                ExcelApp.Quit();
+            }
+            finally
+            {
+                ExcelApp.Quit();
+            }
 
         }
 
@@ -241,7 +272,7 @@ namespace Wing.View
 
                     Common common = new Common();
 
-                    string sql = "INSERT INTO invoice (No, Year, Month, GenbaMei, ToCompany, Manager, Suryo, Unit, Tanka, Kingaku, Biko) VALUES (@No, @Year, @Month, @GenbaMei, @ToCompany, @Manager, @Suryo, @Tani, @Tanka, @Kingaku, @Biko)";
+                    string sql = "INSERT INTO invoice (No, Year, Month, ToCompany, Manager, SiteName, Quantity, Unit, UnitPrice, InTax, Amount, Remarks) VALUES (@No, @Year, @Month,  @ToCompany, @Manager, @GenbaMei, @Suryo, @Tani, @Tanka, @InTax, @Kingaku, @Biko)";
 
                     using (var conn = new MySqlConnection(common.ConnectionString))
                     using (var command = new MySqlCommand(sql, conn))
@@ -263,6 +294,7 @@ namespace Wing.View
                             command.Parameters.AddWithValue("@Suryo", invoice.Suryo);
                             command.Parameters.AddWithValue("@Tani", invoice.Tani);
                             command.Parameters.AddWithValue("@Tanka", invoice.Tanka);
+                            command.Parameters.AddWithValue("@InTax", invoice.InTax);
                             command.Parameters.AddWithValue("@Kingaku", invoice.Kingaku);
                             command.Parameters.AddWithValue("@Biko", invoice.Biko);
 
@@ -355,11 +387,86 @@ namespace Wing.View
             selectManager.Show();
         }
 
+        private void Clear_Click(object sender, RoutedEventArgs e)
+        {
+            GenbaMeiText.Text = "";
+            SuryoText.Text = "";
+            TaniText.Text = "";
+            TankaText.Text = "";
+            InTax.IsChecked = false;
+            BikoText.Text = "";
+        }
+
+        /// <summary>
+        /// 以下4つのイベントは入力されたデータから請求明細を検索する
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void YearText_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (KaisyaText.Text != "" && MonthText.Text != "" && TantoText.Text != "")
+            {
+                List<Invoice> invoice = new List<Invoice>();
+
+
+            }
+        }
+
+        private void MonthText_LostFocus(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void TantoText_TextChanged(object sender, TextChangedEventArgs e)
+        {
+
+        }
+
         private void KaisyaText_TextChanged(object sender, TextChangedEventArgs e)
         {
             TantoID.Text = "";
             TantoText.Text = "";
         }
-    }
 
+        private void GetInvoiceData_Click(object sender, RoutedEventArgs e)
+        {
+            ObservableCollection<Model.Invoice> invoices = new ObservableCollection<Model.Invoice>();
+
+            InvoiceLogic logic = new InvoiceLogic();
+            invoices = logic.GetInvoices(int.Parse(KaisyaID.Text), int.Parse(TantoID.Text), int.Parse(YearText.Text), int.Parse(MonthText.Text));
+
+            InvoiceViewModel invoiceViewModel = new InvoiceViewModel();
+            ObservableCollection<InvoiceViewModel> invoiceViewModels = new ObservableCollection<InvoiceViewModel>();
+
+            if (invoices.Count != 0)
+            {
+                for (int i = 0; i < invoices.Count; i++)
+                {
+
+                    invoiceViewModel.No = invoices[i].No;
+                    invoiceViewModel.Year = invoices[i].Year;
+                    invoiceViewModel.Month = invoices[i].Month;
+                    invoiceViewModel.ToCompany = invoices[i].ToCompany;
+                    invoiceViewModel.Manager = invoices[i].Manager;
+                    invoiceViewModel.GenbaMei = invoices[i].SiteName;
+                    invoiceViewModel.Suryo = invoices[i].Quantity;
+                    invoiceViewModel.Tani = invoices[i].Unit;
+                    invoiceViewModel.Tanka = invoices[i].UnitPrice;
+                    invoiceViewModel.InTax = invoices[i].InTax;
+                    invoiceViewModel.Kingaku = invoices[i].Amount;
+                    invoiceViewModel.Biko = invoices[i].Remarks;
+
+                    invoiceViewModels.Add(invoiceViewModel);
+                }
+
+                InvoiceList.ItemsSource = invoiceViewModels;
+
+            }
+            else
+            {
+                System.Windows.Forms.MessageBox.Show("対象データが登録されていません。");
+                InvoiceList.ItemsSource = invoiceViewModels;
+            }
+        }
+    }
 }

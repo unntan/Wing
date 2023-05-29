@@ -39,11 +39,13 @@
         <TextBox Name="KaisyaID" Grid.Row="2" Grid.Column="1" Visibility="Hidden"/>
 
         <Label Grid.Row="2" Grid.Column="2"  VerticalAlignment="Center" HorizontalAlignment="Right">担当者</Label>
-        <TextBox Name="TantoText" Grid.Row="2" Grid.Column="3" Width="150" Height="30" HorizontalAlignment="Left" IsEnabled="False" VerticalContentAlignment="Center"/>
+        <TextBox Name="TantoText" Grid.Row="2" Grid.Column="3" Width="150" Height="30" HorizontalAlignment="Left" IsEnabled="False" VerticalContentAlignment="Center" TextChanged="TantoText_TextChanged"/>
         <TextBox Name="TantoID" Grid.Row="2" Grid.Column="3" Visibility="Hidden"/>
 
         <Button Name="SelectCompany" Grid.Row="3" Grid.Column="1" Click="SelectCompany_Click" Height="30" Width="80">会社選択</Button>
         <Button Name="SelectManager" Grid.Row="3" Grid.Column="3" Click="SelectManager_Click" Height="30" Width="80">担当者選択</Button>
+
+        <Button Name="GetInvoiceData" Grid.Row="3" Grid.Column="4" Click="GetInvoiceData_Click" Height="30" Width="80" ToolTip="「年」「月」「会社名」「担当者」からデータを取得し表示します。">データ取得</Button>
 
         <Label Grid.Row="4" Grid.Column="0" Height="30" VerticalAlignment="Center" HorizontalAlignment="Right" Visibility="Hidden">項番</Label>
         <TextBox Name="NoText" Grid.Row="4" Grid.Column="1" Width="100" Height="30" HorizontalAlignment="Left" IsReadOnly="True" Visibility="Hidden"/>
@@ -60,7 +62,7 @@
 
         <Label Grid.Row="7" Grid.Column="0" Height="30" VerticalAlignment="Center" HorizontalAlignment="Right">単価(税)</Label>
         <TextBox Name="TankaText" Grid.Row="7" Grid.Column="1" Width="150" Height="30" HorizontalAlignment="Left" VerticalContentAlignment="Center"/>
-        <CheckBox Name="InTax" Grid.Row="7" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" Width="20" ToolTip="チェックを入れると税込みで金額を算出します。"></CheckBox>
+        <CheckBox Name="InTax" Grid.Row="7" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" Width="20" ToolTip="内税の場合チェックを入れてください。"></CheckBox>
 
         <Label Grid.Row="8" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Right">備考</Label>
         <TextBox Name="BikoText" Grid.Row="8" Grid.Column="1" Width="150" Height="60" AcceptsReturn="True" TextWrapping="Wrap" VerticalContentAlignment="Top" HorizontalAlignment="Left"/>
@@ -100,11 +102,12 @@
             <Button Name="SavePathSelect" Grid.Row="1" Grid.Column="1" Width="75" Click="SavePath_Click" Height="30" VerticalAlignment="Top">保存先選択</Button>
             <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Bottom" VerticalContentAlignment="Center">ファイル名</Label>
             <TextBox Name="SaveFileName" Width="130" Height="30" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
-            <Button Name="Save" Grid.Row="1" Grid.Column="2" Click="Save_Click" Height="60" Width="120">データ保存</Button>
+            <Button Name="Save" Grid.Row="1" Grid.Column="2" Click="Save_Click" Height="60" Width="120" ToolTip="リストに表示されているデータをデータベースに保存します。">データ保存</Button>
             <Button Name="Output" Grid.Row="1" Grid.Column="3" Click="Output_Click" Height="60" Width="120">請求書出力</Button>
         </Grid>
 
-        <Button Name="Accept" Grid.Row="9" Grid.Column="1" Click="Accept_Click" Height="60" Width="120">リストに追加</Button>
+        <Button Name="Accept" Grid.Row="9" Grid.Column="1" Click="Accept_Click" Height="60" Width="120" ToolTip="「現場名」「数量」「単位」「備考」を画面右のリストに追加します。">リストに追加</Button>
+        <Button Name="Clear" Grid.Row="9" Grid.Column="3" Click="Clear_Click" Height="60" Width="120" ToolTip="入力した「現場名」「数量」「単位」「備考」を削除します。">削除</Button>
 
     </Grid>
 </Window>

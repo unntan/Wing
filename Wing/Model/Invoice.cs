@@ -17,11 +17,11 @@ namespace Wing.Model
         // 発行月
         public int Month { get; set; }
 
-        // 対象企業
-        public string ToCompany { get; set; }
+        // 対象企業(Companyとの結合)
+        public int ToCompany { get; set; }
 
-        // 対象担当者
-        public string Manager { get; set; }
+        // 対象担当者(Managerとの結合)
+        public int Manager { get; set; }
 
         // 現場名
         public string SiteName { get; set; }
@@ -34,6 +34,9 @@ namespace Wing.Model
 
         // 単価
         public int UnitPrice { get; set; }
+
+        // 内税判定
+        public bool InTax { get; set; }
 
         // 金額
         public int Amount { get; set; }

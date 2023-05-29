@@ -80,7 +80,7 @@ namespace Wing.View
         private void Comp_Click(object sender, RoutedEventArgs e)
         {
             parentInvoice.TantoText.Text = SelectedManagerName.Text;
-            parentInvoice.TantoID.Text = SelectedManagerID.ToString();
+            parentInvoice.TantoID.Text = SelectedManagerID.Text;
             Close();
         }
     }

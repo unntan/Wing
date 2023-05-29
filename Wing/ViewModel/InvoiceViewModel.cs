@@ -16,8 +16,8 @@ namespace Wing.ViewModel
         public int No { get; set; }
         public int Year { get; set; }
         public int Month { get; set; }
-        public string ToCompany { get; set; }
-        public string Manager { get; set; }
+        public int ToCompany { get; set; }
+        public int Manager { get; set; }
         public string GenbaMei { get; set; }
         public Double Suryo { get; set; }
         public string Tani { get; set; }
