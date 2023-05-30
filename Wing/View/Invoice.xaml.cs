@@ -476,5 +476,32 @@ namespace Wing.View
                 InvoiceList.ItemsSource = invoiceViewModels;
             }
         }
+
+        /// <summary>
+        /// DataGrid右クリック時データ削除
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            int row;
+
+            try
+            {
+                row = InvoiceList.Items.IndexOf(InvoiceList.CurrentItem);
+            }
+            catch
+            {
+                row = -1;
+            }
+
+            var dataList = InvoiceList.ItemsSource as ObservableCollection<InvoiceViewModel>;
+
+            var item = dataList[row];
+
+            dataList.Remove(item);
+
+            System.Windows.Forms.MessageBox.Show("データを削除しました。");
+        }
     }
 }

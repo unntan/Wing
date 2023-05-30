@@ -35,5 +35,11 @@ namespace Wing.View
             ChangeTax changeTax = new ChangeTax();
             changeTax.Show();
         }
+
+        private void ChangeAccount_Click(object sender, RoutedEventArgs e)
+        {
+            ChangeAccount changeAccount = new ChangeAccount();
+            changeAccount.Show();
+        }
     }
 }

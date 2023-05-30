@@ -1,74 +1,69 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Wing.Model;
 using Wing.Other;
 
 namespace Wing.ViewModel
 {
-    class CompanyViewModel:ViewModelBase
+    public class AccountViewModel : ViewModelBase
     {
-        private int _Id;
-        public int Id
+        private string _firstRow;
+        public string firstRow
         {
             get
             {
-                return _Id;
+                return _firstRow;
             }
             set
             {
-                if (_Id == value) return;
-                _Id = value;
+                _firstRow = value;
                 OnPropertyChanged();
             }
         }
 
-        private string _Name;
-        public string Name
+        private string _secondRow;
+        public string secondRow
         {
             get
             {
-                return _Name;
+                return _secondRow;
             }
             set
             {
-                if (_Name == value) return;
-                _Name = value;
+                _secondRow = value;
                 OnPropertyChanged();
             }
         }
 
-        private string _Address;
-        public string Address
+        private string _thirdRow;
+        public string thirdRow
         {
             get
             {
-                return _Address;
+                return _thirdRow;
             }
             set
             {
-                if (_Address == value) return;
-                _Address = value;
+                _thirdRow = value;
                 OnPropertyChanged();
             }
         }
 
-        private string _Tell;
-        public string Tell
+        private string _fourthRow;
+        public string fourthRow
         {
             get
             {
-                return _Tell;
+                return _fourthRow;
             }
             set
             {
-                if (_Tell == value) return;
-                _Tell = value;
+                _fourthRow = value;
                 OnPropertyChanged();
             }
         }
+
     }
 }

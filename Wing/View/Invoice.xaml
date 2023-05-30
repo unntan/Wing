@@ -68,6 +68,11 @@
         <TextBox Name="BikoText" Grid.Row="8" Grid.Column="1" Width="150" Height="60" AcceptsReturn="True" TextWrapping="Wrap" VerticalContentAlignment="Top" HorizontalAlignment="Left"/>
 
         <DataGrid Name="InvoiceList" Grid.Row="1" Grid.Column="5" Grid.RowSpan="8" Height="400" Width="600" CanUserAddRows="False" AutoGenerateColumns="False" IsReadOnly="True" MouseDoubleClick="InvoiceList_MouseDoubleClick">
+            <DataGrid.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="削除" Click="MenuItem_Click"/>
+                </ContextMenu>
+            </DataGrid.ContextMenu>
             <DataGrid.Columns>
                 <DataGridTextColumn Header="No" Width="30" Visibility="Hidden" Binding="{Binding No}"/>
                 <DataGridTextColumn Header="年" Width="30" Visibility="Hidden" Binding="{Binding Year}"/>

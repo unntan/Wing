@@ -151,12 +151,16 @@
     <Compile Include="Model\ManagerListData.cs" />
     <Compile Include="Model\Tax.cs" />
     <Compile Include="Other\ViewModelBase.cs" />
+    <Compile Include="ViewModel\AccountViewModel.cs" />
     <Compile Include="ViewModel\CompanyViewModel.cs" />
     <Compile Include="ViewModel\InvoiceViewModel.cs" />
     <Compile Include="ViewModel\ManagerViewModel.cs" />
     <Compile Include="ViewModel\TaxViewModel.cs" />
     <Compile Include="View\CategoryMenu.xaml.cs">
       <DependentUpon>CategoryMenu.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\ChangeAccount.xaml.cs">
+      <DependentUpon>ChangeAccount.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\ChangeTax.xaml.cs">
       <DependentUpon>ChangeTax.xaml</DependentUpon>
@@ -184,6 +188,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="View\CategoryMenu.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\ChangeAccount.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
