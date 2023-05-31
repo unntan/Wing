@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Wing.View"
         mc:Ignorable="d"
-        Title="作業内容選択" Height="450" Width="300">
+        Title="Select" Height="450" Width="300">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="100"/>
@@ -27,10 +27,11 @@
                 <ColumnDefinition Width="100"/>
             </Grid.ColumnDefinitions>
 
-            <Button Name="ChangeTaxBtn" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" Width="80" Height="40" Click="ChangeTax_Click">税率変更</Button>
+            <Button Name="ChangeTaxBtn" Grid.Row="0" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" Width="80" Height="40" Click="ChangeTax_Click" ToolTip="消費税率の変更を行います。">税率変更</Button>
 
-            <Button Name="ChangeAccount" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" Width="80" Height="40" Click="ChangeAccount_Click">口座情報変更</Button>
+            <Button Name="ChangeAccount" Grid.Row="1" Grid.Column="0" VerticalAlignment="Center" HorizontalAlignment="Center" Width="80" Height="40" Click="ChangeAccount_Click" ToolTip="請求書の「お振込先」に記載されている情報を変更します。">口座情報変更</Button>
 
+            <Button Name="Transformation" Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Center" Width="80" Height="40" Click="Trans_Click" ToolTip="作成したExcelファイルをpdfファイルに変換します。">形式変換</Button>
         </Grid>
     </Grid>
 </Window>

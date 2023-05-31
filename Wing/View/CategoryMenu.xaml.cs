@@ -41,5 +41,11 @@ namespace Wing.View
             ChangeAccount changeAccount = new ChangeAccount();
             changeAccount.Show();
         }
+
+        private void Trans_Click(object sender, RoutedEventArgs e)
+        {
+            Trans trans = new Trans();
+            trans.Show();
+        }
     }
 }

@@ -1,0 +1,39 @@
+﻿<Window x:Class="Wing.View.Trans"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Wing.View"
+        mc:Ignorable="d"
+        Title="Transformation" Height="500" Width="450">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+
+        <Label Grid.Row="0" Content="ファイル形式変換" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="35" FontWeight="Bold"/>
+        
+        <Label Grid.Row="1" Content="変換元Excelファイル選択" VerticalAlignment="Center" HorizontalAlignment="Left" FontSize="20"/>
+
+        <TextBox Name="BeforeFile" Grid.Row="2" Height="30" Width="250" VerticalAlignment="Center" Margin="20,0,20,0" HorizontalAlignment="Left"/>
+
+        <Button Name="BeforeSelect" Grid.Row="2" Height="30" Width="120" VerticalAlignment="Center" Margin="20,0,20,0" HorizontalAlignment="Right" Click="BeforeSelect_Click">ファイル選択</Button>
+        
+        <Label Grid.Row="4" Content="変換後pdfファイル配置場所" VerticalAlignment="Center" HorizontalAlignment="Left" FontSize="20"/>
+
+        <TextBox Name="AfterFile" Grid.Row="5" Height="30" Width="250" VerticalAlignment="Center" Margin="20,0,20,0" HorizontalAlignment="Left"/>
+
+        <TextBox Name="HiddenAfterFile" Visibility="Hidden" Grid.Row="5"/>
+
+        <Button Name="AfterSelect" Grid.Row="5" Height="30" Width="120" VerticalAlignment="Center" Margin="20,0,20,0" HorizontalAlignment="Right" Click="AfterSelect_Click">フォルダ選択</Button>
+
+        <Button Name="Translate" Grid.Row="7" Height="50" Width="150" VerticalAlignment="Center" HorizontalAlignment="Center" Click="Translate_Click">ファイル変換</Button>
+    </Grid>
+</Window>
