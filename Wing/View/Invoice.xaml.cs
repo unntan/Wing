@@ -177,7 +177,7 @@ namespace Wing.View
                 double sumOutTax = 0;
 
                 // 合計金額用
-                int SumMoney = 0;
+                int SumMoneyOutTax = 0;
 
                 int cnt = 1;
 
@@ -204,9 +204,10 @@ namespace Wing.View
                         Tanka.Value = lst[i - 11].Tanka;
 
                         // 税判定
-                        if (!lst[i - 11].InTax)
+                        if (lst[i - 11].InTax)
                         {
-                            sumOutTax += lst[i - 11].Tanka;
+                            // 税額算出
+                            sumOutTax += (lst[i - 11].Tanka * lst[i - 11].Suryo) * tax;
                         }
 
                         // 金額
@@ -218,7 +219,7 @@ namespace Wing.View
                         Biko.Value = lst[i - 11].Biko;
 
                         // 合計金額演算用
-                        SumMoney += Kingaku.Value;
+                        SumMoneyOutTax += Kingaku.Value;
 
                         cnt = cnt + 1;
                     }
@@ -226,15 +227,17 @@ namespace Wing.View
 
                 // 小計
                 Range Sum = sheet.Cells[23, 9];
-                Sum.Value = SumMoney;
+                Sum.Value = SumMoneyOutTax;
 
                 // 消費税
                 Range Tax = sheet.Cells[24, 9];
-                Tax.Value = sumOutTax * tax;
+                Tax.Value = sumOutTax;
 
                 // 合計金額
                 Range allSum = sheet.Cells[25, 9];
-                allSum.Value = SumMoney + sumOutTax * tax;
+                allSum.Value = SumMoneyOutTax + sumOutTax;
+
+                sheet.Cells[8, 2].Value = SumMoneyOutTax + sumOutTax;
 
                 // 請求日
                 Range InvoiceDate = sheet.Cells[2, 10];
