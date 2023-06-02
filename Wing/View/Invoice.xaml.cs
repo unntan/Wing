@@ -28,10 +28,17 @@ namespace Wing.View
     /// </summary>
     public partial class Invoice : Window
     {
-        public Invoice(string name)
+        public string UserName = "";
+
+        public Invoice(string userName)
         {
-            UserId.Text = name;
+            UserName = userName;
             InitializeComponent();
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            UserId.Text = UserName;
         }
 
         /// <summary>

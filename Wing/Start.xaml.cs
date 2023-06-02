@@ -36,6 +36,7 @@ namespace Wing
             {
                 CategoryMenu menu = new CategoryMenu(UserText.Text);
                 menu.Show();
+                Close();
             }
             else
             {

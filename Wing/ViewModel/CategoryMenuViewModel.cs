@@ -7,8 +7,22 @@ using Wing.Other;
 
 namespace Wing.ViewModel
 {
-    class CatgoryMenuVIewModel : ViewModelBase
+    public class CategoryMenuViewModel : ViewModelBase
     {
+        private string _LabelUserName;
+        public string LabelUserName
+        {
+            get
+            {
+                return _LabelUserName;
+            }
+            set
+            {
+                _LabelUserName = "【ログインユーザ：" + value + "】";
+                OnPropertyChanged();
+            }
+        }
+
         private string _UserName;
         public string UserName
         {
@@ -19,7 +33,6 @@ namespace Wing.ViewModel
             set
             {
                 _UserName = value;
-                OnPropertyChanged();
             }
         }
     }

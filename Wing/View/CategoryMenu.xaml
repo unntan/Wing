@@ -3,9 +3,12 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Wing.View"
+        xmlns:local="clr-namespace:Wing.ViewModel"
         mc:Ignorable="d"
-        Title="メニュー選択" Height="500" Width="300">
+        Title="メニュー選択" Height="500" Width="300" Loaded="Window_Loaded">
+    <Window.DataContext>
+        <local:CategoryMenuViewModel/>
+    </Window.DataContext>
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="50"/>
@@ -15,8 +18,8 @@
             <RowDefinition Height="100"/>
         </Grid.RowDefinitions>
 
-        <Label Name="UserName"  Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Left" FontSize="15"/>
-        <TextBox Name="UserNameText" Grid.Row="0" Visibility="Hidden"/>
+        <Label Name="UserName"  Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="15" Content="{Binding LabelUserName}"/>
+        <TextBox Name="UserNameText" Grid.Row="0" Visibility="Hidden" Text="{Binding UserName}"/>
 
         <Button Grid.Row="1" VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="22" Height="50" Width="220" Margin="20" Click="InvoiceClick">請求書作成</Button>
         

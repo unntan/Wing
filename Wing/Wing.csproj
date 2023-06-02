@@ -162,6 +162,7 @@
     <Compile Include="Model\Tax.cs" />
     <Compile Include="Other\ViewModelBase.cs" />
     <Compile Include="ViewModel\AccountViewModel.cs" />
+    <Compile Include="ViewModel\CategoryMenuViewModel.cs" />
     <Compile Include="ViewModel\CompanyViewModel.cs" />
     <Compile Include="ViewModel\InvoiceViewModel.cs" />
     <Compile Include="ViewModel\ManagerViewModel.cs" />

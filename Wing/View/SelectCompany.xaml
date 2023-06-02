@@ -39,7 +39,7 @@
         <Label Grid.Row="2" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Bold" FontSize="15">【選択された会社名】</Label>
 
         <TextBox Name="SelectedCompanyID" Grid.Row="3" Grid.Column="0" Visibility="Hidden"/>
-        <TextBox Name="SelectedCompany" Grid.Row="3" Grid.Column="0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="150" Height="50" FontWeight="Bold" FontSize="20" IsReadOnly="True"/>
+        <TextBox Name="SelectedCompany" Grid.Row="3" Grid.Column="0" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="250" Height="50" FontWeight="Bold" FontSize="20" IsReadOnly="True"/>
 
         <Button Name="Comp" Grid.Row="4" Grid.Column="1" Width="100" Height="30" VerticalAlignment="Bottom" HorizontalAlignment="Center" Click="Comp_Click">確定</Button>
     </Grid>
