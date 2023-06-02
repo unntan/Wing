@@ -8,11 +8,11 @@
         Title="請求書作成" Height="600" Width="1200">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="20"/>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="50"/>
             <RowDefinition Height="50"/>
             <RowDefinition Height="50"/>
             <RowDefinition Height="30"/>
-            <RowDefinition Height="50"/>
             <RowDefinition Height="50"/>
             <RowDefinition Height="50"/>
             <RowDefinition Height="50"/>
@@ -28,33 +28,37 @@
             <ColumnDefinition Width="600"/>
         </Grid.ColumnDefinitions>
 
-        <Label Grid.Row="1" Grid.Column="0"  VerticalAlignment="Center" HorizontalAlignment="Right">年</Label>
-        <TextBox Name="YearText" Grid.Row="1" Grid.Column="1" Width="100" Height="30" HorizontalAlignment="Left" VerticalContentAlignment="Center"/>
+        <Label Grid.Row="0" Grid.Column="0" Height="30" VerticalAlignment="Center" HorizontalAlignment="Right">ログインユーザ</Label>
+        <TextBox Name="UserId" Grid.Row="0" Grid.Column="1" Height="30" IsReadOnly="True"/>
 
-        <Label Grid.Row="1" Grid.Column="2"  VerticalAlignment="Center" HorizontalAlignment="Right">月</Label>
-        <TextBox Name="MonthText" Grid.Row="1" Grid.Column="3" Width="100" Height="30" HorizontalAlignment="Left" VerticalContentAlignment="Center"/>
+        <Label Grid.Row="1" Grid.Column="0" Height="30" VerticalAlignment="Center" HorizontalAlignment="Right">請求日</Label>
+        <DatePicker Name="InvoiceDateText" Grid.Row="1" Grid.Column="1" Height="30" Width="150" HorizontalAlignment="Left"/>
 
-        <Label Grid.Row="2" Grid.Column="0"  VerticalAlignment="Center" HorizontalAlignment="Right">会社名</Label>
-        <TextBox Name="KaisyaText" Grid.Row="2" Grid.Column="1" Width="150" Height="30" HorizontalAlignment="Left" IsEnabled="False" VerticalContentAlignment="Center" TextChanged="KaisyaText_TextChanged"/>
-        <TextBox Name="KaisyaID" Grid.Row="2" Grid.Column="1" Visibility="Hidden"/>
+        <Label Grid.Row="2" Grid.Column="0"  VerticalAlignment="Center" HorizontalAlignment="Right">年</Label>
+        <TextBox Name="YearText" Grid.Row="2" Grid.Column="1" Width="100" Height="30" HorizontalAlignment="Left" VerticalContentAlignment="Center" ToolTip="何年何月分の請求かを定める情報"/>
 
-        <Label Grid.Row="2" Grid.Column="2"  VerticalAlignment="Center" HorizontalAlignment="Right">担当者</Label>
-        <TextBox Name="TantoText" Grid.Row="2" Grid.Column="3" Width="150" Height="30" HorizontalAlignment="Left" IsEnabled="False" VerticalContentAlignment="Center" TextChanged="TantoText_TextChanged"/>
-        <TextBox Name="TantoID" Grid.Row="2" Grid.Column="3" Visibility="Hidden"/>
+        <Label Grid.Row="2" Grid.Column="2"  VerticalAlignment="Center" HorizontalAlignment="Right">月</Label>
+        <TextBox Name="MonthText" Grid.Row="2" Grid.Column="3" Width="100" Height="30" HorizontalAlignment="Left" VerticalContentAlignment="Center" ToolTip="何年何月分の請求かを定める情報"/>
 
-        <Button Name="SelectCompany" Grid.Row="3" Grid.Column="1" Click="SelectCompany_Click" Height="30" Width="80">会社選択</Button>
-        <Button Name="SelectManager" Grid.Row="3" Grid.Column="3" Click="SelectManager_Click" Height="30" Width="80">担当者選択</Button>
+        <Label Grid.Row="3" Grid.Column="0"  VerticalAlignment="Center" HorizontalAlignment="Right">会社名</Label>
+        <TextBox Name="KaisyaText" Grid.Row="3" Grid.Column="1" Width="150" Height="30" HorizontalAlignment="Left" IsEnabled="False" VerticalContentAlignment="Center" TextChanged="KaisyaText_TextChanged"/>
+        <TextBox Name="KaisyaID" Grid.Row="3" Grid.Column="1" Visibility="Hidden"/>
 
-        <Button Name="GetInvoiceData" Grid.Row="3" Grid.Column="4" Click="GetInvoiceData_Click" Height="30" Width="80" ToolTip="「年」「月」「会社名」「担当者」からデータを取得し表示します。">データ取得</Button>
+        <Label Grid.Row="3" Grid.Column="2"  VerticalAlignment="Center" HorizontalAlignment="Right">担当者</Label>
+        <TextBox Name="TantoText" Grid.Row="3" Grid.Column="3" Width="150" Height="30" HorizontalAlignment="Left" IsEnabled="False" VerticalContentAlignment="Center" TextChanged="TantoText_TextChanged"/>
+        <TextBox Name="TantoID" Grid.Row="3" Grid.Column="3" Visibility="Hidden"/>
+
+        <Button Name="SelectCompany" Grid.Row="4" Grid.Column="1" Click="SelectCompany_Click" Height="30" Width="80">会社選択</Button>
+        <Button Name="SelectManager" Grid.Row="4" Grid.Column="3" Click="SelectManager_Click" Height="30" Width="80">担当者選択</Button>
+
+        <Button Name="GetInvoiceData" Grid.Row="4" Grid.Column="4" Click="GetInvoiceData_Click" Height="30" Width="80" ToolTip="「年」「月」「会社名」「担当者」からデータを取得し表示します。">データ取得</Button>
 
         <Label Grid.Row="4" Grid.Column="0" Height="30" VerticalAlignment="Center" HorizontalAlignment="Right" Visibility="Hidden">項番</Label>
         <TextBox Name="NoText" Grid.Row="4" Grid.Column="1" Width="100" Height="30" HorizontalAlignment="Left" IsReadOnly="True" Visibility="Hidden"/>
 
-        <Label Grid.Row="4" Grid.Column="0" Height="30" VerticalAlignment="Center" HorizontalAlignment="Right">請求日</Label>
-        <DatePicker Name="InvoiceDateText" Grid.Row="4" Grid.Column="1" Height="30" Width="150" HorizontalAlignment="Left"/>
-
         <Label Grid.Row="5" Grid.Column="0" Height="30" VerticalAlignment="Center" HorizontalAlignment="Right">現場名</Label>
         <TextBox Name="GenbaMeiText" Grid.Row="5" Grid.Column="1" Width="150" Height="30" HorizontalAlignment="Left" VerticalContentAlignment="Center"/>
+        <CheckBox Name="UpdateFlagSign" Grid.Row="5" Grid.Column="2" Visibility="Hidden"/>
 
         <Label Grid.Row="6" Grid.Column="0" Height="30" VerticalAlignment="Center" HorizontalAlignment="Right">数量(単位)</Label>
         <TextBox Name="SuryoText" Grid.Row="6" Grid.Column="1" Width="150" Height="30" HorizontalAlignment="Left" VerticalContentAlignment="Center"/>
@@ -73,7 +77,17 @@
                     <MenuItem Header="削除" Click="MenuItem_Click"/>
                 </ContextMenu>
             </DataGrid.ContextMenu>
+            <DataGrid.RowStyle>
+                <Style TargetType="DataGridRow">
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="Aquamarine"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </DataGrid.RowStyle>
             <DataGrid.Columns>
+                <DataGridTextColumn Header="新規行判定" Width="30" Visibility="Hidden" Binding="{Binding UpdateFlagSign}"/>
                 <DataGridTextColumn Header="No" Width="30" Visibility="Hidden" Binding="{Binding No}"/>
                 <DataGridTextColumn Header="年" Width="30" Visibility="Hidden" Binding="{Binding Year}"/>
                 <DataGridTextColumn Header="月" Width="30" Visibility="Hidden" Binding="{Binding Month}"/>

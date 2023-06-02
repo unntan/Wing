@@ -19,14 +19,16 @@ namespace Wing.View
     /// </summary>
     public partial class CategoryMenu : Window
     {
-        public CategoryMenu()
+        public CategoryMenu(string userName)
         {
+            UserName.Content = "ユーザID : " + userName;
+            UserNameText.Text = userName;
             InitializeComponent();
         }
 
         private void InvoiceClick(object sender, RoutedEventArgs e)
         {
-            Invoice invoice = new Invoice();
+            Invoice invoice = new Invoice(UserName.Content.ToString());
             invoice.Show();
         }
 

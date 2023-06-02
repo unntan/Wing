@@ -32,9 +32,9 @@ namespace Wing
         {
             Common common = new Common();
 
-            if (common.PassCheck(PassText.Text))
+            if (common.PassCheck(UserText.Text, PassText.Text))
             {
-                CategoryMenu menu = new CategoryMenu();
+                CategoryMenu menu = new CategoryMenu(UserText.Text);
                 menu.Show();
             }
             else

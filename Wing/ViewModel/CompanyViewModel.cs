@@ -20,7 +20,6 @@ namespace Wing.ViewModel
             }
             set
             {
-                if (_Id == value) return;
                 _Id = value;
                 OnPropertyChanged();
             }
@@ -35,7 +34,6 @@ namespace Wing.ViewModel
             }
             set
             {
-                if (_Name == value) return;
                 _Name = value;
                 OnPropertyChanged();
             }
@@ -50,7 +48,6 @@ namespace Wing.ViewModel
             }
             set
             {
-                if (_Address == value) return;
                 _Address = value;
                 OnPropertyChanged();
             }
@@ -65,7 +62,6 @@ namespace Wing.ViewModel
             }
             set
             {
-                if (_Tell == value) return;
                 _Tell = value;
                 OnPropertyChanged();
             }

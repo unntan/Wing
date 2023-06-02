@@ -13,6 +13,7 @@ namespace Wing.ViewModel
 
         }
 
+        public bool UpdateFlag { get; set; }
         public int No { get; set; }
         public int Year { get; set; }
         public int Month { get; set; }

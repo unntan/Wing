@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Wing"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="400">
+        Title="ログイン" Height="300" Width="400">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto"/>
@@ -15,6 +15,8 @@
         <Label VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="36" FontFamily="Bauhaus 93" Grid.Row="1">Wing</Label>
         <TextBlock x:Name="DateBlock" VerticalAlignment="Top" HorizontalAlignment="Center" FontSize="36" Grid.Row="2"></TextBlock>
         <StackPanel Orientation="Vertical" VerticalAlignment="top" Grid.Row="3">
+            <Label Height="30" Width="75" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="14" FontWeight="Bold">ユーザID</Label>
+            <TextBox Name="UserText" Height="30" Width="200" VerticalContentAlignment="Center"></TextBox>
             <Label Height="30" Width="75" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="14" FontWeight="Bold">パスワード</Label>
             <TextBox Name="PassText" Height="30" Width="200" VerticalContentAlignment="Center"></TextBox>
             <Button Height="30" Width="75" Margin="30" Click="Button_Click">ログイン</Button>

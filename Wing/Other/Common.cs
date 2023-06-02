@@ -15,7 +15,7 @@ namespace Wing.Other
     {
         public string ConnectionString = "Server=localhost;User ID=wing;Password=tsukushi294;Database=Wing";
 
-        public bool PassCheck(string pass)
+        public bool PassCheck(string UserId, string pass)
         {
             DataTable dt = new DataTable();
 
@@ -27,10 +27,11 @@ namespace Wing.Other
                     connection.Open();
 
                     // 入力パスワードと一致するレコードがあるかの確認
-                    string CommandText = $"Select * from Login_Information where Password = @pass";
+                    string CommandText = $"Select * from Login_Information where UserId = @UserId and Password = @pass";
 
                     command.Connection = connection;
                     command.CommandText = CommandText;
+                    command.Parameters.AddWithValue("@UserId", UserId);
                     command.Parameters.AddWithValue("@pass", pass);
 
                     using (var reader = command.ExecuteReader())

@@ -28,8 +28,9 @@ namespace Wing.View
     /// </summary>
     public partial class Invoice : Window
     {
-        public Invoice()
+        public Invoice(string name)
         {
+            UserId.Text = name;
             InitializeComponent();
         }
 
@@ -42,6 +43,8 @@ namespace Wing.View
         {
             double Kingaku;
             int DataNo;
+            double tax = new TaxLogic().GetTax();
+
 
             // バリデーション
             if (GenbaMeiText.Text == "")
@@ -62,57 +65,100 @@ namespace Wing.View
                 System.Windows.MessageBox.Show("【単価】数字を正しく入力してください。", "エラー", MessageBoxButton.OK, MessageBoxImage.Error);
             }
 
-            double tax = new TaxLogic().GetTax();
-
-            // 画面の情報から金額を算出する
-            if ((bool)InTax.IsChecked)
+            if ((bool)UpdateFlagSign.IsChecked)
             {
-                Kingaku = Double.Parse(SuryoText.Text) * Double.Parse(TankaText.Text);
-                Kingaku = Kingaku + Math.Round(Kingaku * tax);
+                // データ更新処理
+                ObservableCollection<InvoiceViewModel> dataList = InvoiceList.ItemsSource as ObservableCollection<InvoiceViewModel>;
+
+                string No = NoText.Text;
+
+                InvoiceViewModel InvoiceData = dataList.FirstOrDefault(x => x.No.ToString() == NoText.Text && x.Year.ToString() == YearText.Text && x.Month.ToString() == MonthText.Text && x.ToCompany.ToString() == KaisyaID.Text && x.Manager.ToString() == TantoID.Text);
+                int rowIndex = dataList.IndexOf(InvoiceData);
+
+                InvoiceData.GenbaMei = GenbaMeiText.Text;
+                InvoiceData.Suryo = Double.Parse(SuryoText.Text);
+                InvoiceData.Tani = TaniText.Text;
+                InvoiceData.Tanka = Double.Parse(TankaText.Text);
+                InvoiceData.InTax = (bool)InTax.IsChecked;
+                InvoiceData.Kingaku = (int)(InvoiceData.Suryo * InvoiceData.Tanka * tax);
+                InvoiceData.Biko = BikoText.Text;
+                InvoiceData.UpdateFlag = UpdateFlagSign.IsChecked.Value;
+
+                // 更新したデータを書き換えてNo順に並び替え
+                dataList.RemoveAt(rowIndex);
+                dataList.Add(InvoiceData);
+                dataList = new ObservableCollection<InvoiceViewModel>(dataList.OrderBy(n => n.No));
+
+                InvoiceList.ItemsSource = dataList;
+
+                // データ追加後のテキストボックス等は空にする
+                GenbaMeiText.Text = "";
+                SuryoText.Text = "";
+                TaniText.Text = "";
+                TankaText.Text = "";
+                BikoText.Text = "";
+
+                if (InTax.IsChecked == true)
+                {
+                    InTax.IsChecked = false;
+                }
             }
             else
             {
-                Kingaku = Double.Parse(SuryoText.Text) * Double.Parse(TankaText.Text);
+
+                // データ追加処理
+
+                // 画面の情報から金額を算出する
+                if ((bool)InTax.IsChecked)
+                {
+                    Kingaku = Double.Parse(SuryoText.Text) * Double.Parse(TankaText.Text);
+                    Kingaku = Kingaku + Math.Round(Kingaku * tax);
+                }
+                else
+                {
+                    Kingaku = Double.Parse(SuryoText.Text) * Double.Parse(TankaText.Text);
+                }
+
+                InvoiceList.AutoGenerateColumns = false;
+
+                ObservableCollection<InvoiceViewModel> dataList = InvoiceList.ItemsSource as ObservableCollection<InvoiceViewModel>;
+
+                if (dataList == null)
+                {
+                    dataList = new ObservableCollection<InvoiceViewModel>();
+                }
+
+                // Gridに連番を振るため最終行の行番を取得する
+                if (InvoiceList.Items.Count == 0)
+                {
+                    DataNo = 0;
+                }
+                else
+                {
+                    int lastRowNo = InvoiceList.Items.Count;
+                    DataGridRow dataGridRow = InvoiceList.ItemContainerGenerator.ContainerFromIndex(lastRowNo - 1) as DataGridRow;
+                    DataNo = (dataGridRow.Item as InvoiceViewModel).No;
+                }
+
+                InvoiceViewModel invoiceData = CreateData(DataNo, Kingaku);
+
+                dataList.Add(invoiceData);
+
+                InvoiceList.ItemsSource = dataList;
+
+                // データ追加後のテキストボックス等は空にする
+                GenbaMeiText.Text = "";
+                SuryoText.Text = "";
+                TaniText.Text = "";
+                TankaText.Text = "";
+                BikoText.Text = "";
+
+                if (InTax.IsChecked == true)
+                {
+                    InTax.IsChecked = false;
+                }
             }
 
-            InvoiceList.AutoGenerateColumns = false;
-
-            var dataList = InvoiceList.ItemsSource as ObservableCollection<InvoiceViewModel>;
-
-            if (dataList == null)
-            {
-                dataList = new ObservableCollection<InvoiceViewModel>();
-            }
-
-            // Gridに連番を振るため最終行の行番を取得する
-            if (InvoiceList.Items.Count == 0)
-            {
-                DataNo = 0;
-            }
-            else
-            {
-                int lastRowNo = InvoiceList.Items.Count;
-                DataGridRow dataGridRow = InvoiceList.ItemContainerGenerator.ContainerFromIndex(lastRowNo - 1) as DataGridRow;
-                DataNo = (dataGridRow.Item as InvoiceViewModel).No;
-            }
-
-            InvoiceViewModel invoiceData = CreateData(DataNo, Kingaku);
-
-            dataList.Add(invoiceData);
-
-            InvoiceList.ItemsSource = dataList;
-
-            // データ追加後のテキストボックス等は空にする
-            GenbaMeiText.Text = "";
-            SuryoText.Text = "";
-            TaniText.Text = "";
-            TankaText.Text = "";
-            BikoText.Text = "";
-
-            if (InTax.IsChecked == true)
-            {
-                InTax.IsChecked = false;
-            }
         }
 
         /// <summary>
@@ -123,7 +169,7 @@ namespace Wing.View
         /// <returns>画面に表示するデータ</returns>
         private InvoiceViewModel CreateData(int prefix, double kingaku)
         {
-            var dataList = new InvoiceViewModel { No = prefix + 1, Year = int.Parse(YearText.Text), Month = int.Parse(MonthText.Text), ToCompany = int.Parse(KaisyaID.Text), Manager = int.Parse(TantoID.Text), GenbaMei = GenbaMeiText.Text, Suryo = Double.Parse(SuryoText.Text), Tanka = Double.Parse(TankaText.Text), InTax = (bool)InTax.IsChecked, Tani = TaniText.Text, Kingaku = (int)Math.Round(kingaku), Biko = BikoText.Text };
+            var dataList = new InvoiceViewModel { UpdateFlag = false, No = prefix + 1, Year = int.Parse(YearText.Text), Month = int.Parse(MonthText.Text), ToCompany = int.Parse(KaisyaID.Text), Manager = int.Parse(TantoID.Text), GenbaMei = GenbaMeiText.Text, Suryo = Double.Parse(SuryoText.Text), Tanka = Double.Parse(TankaText.Text), InTax = (bool)InTax.IsChecked, Tani = TaniText.Text, Kingaku = (int)Math.Round(kingaku), Biko = BikoText.Text };
             return dataList;
         }
 
@@ -137,6 +183,12 @@ namespace Wing.View
 
             try
             {
+                if (InvoiceDateText.Text == "")
+                {
+                    System.Windows.MessageBox.Show("請求日を入力してください。");
+                    return;
+                }
+
                 string fileName = @"C:\WingTemp\InvoiceTemp.xlsx";
 
                 string folderName = @"C:\WingTemp";
@@ -207,7 +259,7 @@ namespace Wing.View
                         if (lst[i - 11].InTax)
                         {
                             // 税額算出
-                            sumOutTax += (lst[i - 11].Tanka * lst[i - 11].Suryo) * tax;
+                            sumOutTax += lst[i - 11].Tanka * lst[i - 11].Suryo * tax;
                         }
 
                         // 金額
@@ -274,46 +326,91 @@ namespace Wing.View
             {
                 for (int item = 0; item < InvoiceList.Items.Count; item++)
                 {
+                    // 更新処理を入れる
                     DataGridRow row = InvoiceList.ItemContainerGenerator.ContainerFromIndex(item) as DataGridRow;
 
                     InvoiceViewModel invoice = row.Item as InvoiceViewModel;
 
                     Common common = new Common();
 
-                    string sql = "INSERT INTO invoice (No, Year, Month, ToCompany, Manager, SiteName, Quantity, Unit, UnitPrice, InTax, Amount, Remarks) VALUES (@No, @Year, @Month,  @ToCompany, @Manager, @GenbaMei, @Suryo, @Tani, @Tanka, @InTax, @Kingaku, @Biko)";
-
-                    using (var conn = new MySqlConnection(common.ConnectionString))
-                    using (var command = new MySqlCommand(sql, conn))
+                    if (!invoice.UpdateFlag)
                     {
-                        try
+                        string sql = "INSERT INTO invoice (No, Year, Month, ToCompany, Manager, SiteName, Quantity, Unit, UnitPrice, InTax, Amount, Remarks, CreateDateTime, CreateUser) VALUES (@No, @Year, @Month,  @ToCompany, @Manager, @GenbaMei, @Suryo, @Tani, @Tanka, @InTax, @Kingaku, @Biko, @CreateDT, @CreateUser)";
+
+                        using (var conn = new MySqlConnection(common.ConnectionString))
+                        using (var command = new MySqlCommand(sql, conn))
                         {
-                            // 接続
-                            conn.Open();
+                            try
+                            {
+                                // 接続
+                                conn.Open();
 
-                            command.Connection = conn;
-                            command.CommandText = sql;
+                                command.Connection = conn;
+                                command.CommandText = sql;
 
-                            command.Parameters.AddWithValue("@No", invoice.No);
-                            command.Parameters.AddWithValue("@Year", invoice.Year);
-                            command.Parameters.AddWithValue("@Month", invoice.Month);
-                            command.Parameters.AddWithValue("@GenbaMei", invoice.GenbaMei);
-                            command.Parameters.AddWithValue("@ToCompany", invoice.ToCompany);
-                            command.Parameters.AddWithValue("@Manager", invoice.Manager);
-                            command.Parameters.AddWithValue("@Suryo", invoice.Suryo);
-                            command.Parameters.AddWithValue("@Tani", invoice.Tani);
-                            command.Parameters.AddWithValue("@Tanka", invoice.Tanka);
-                            command.Parameters.AddWithValue("@InTax", invoice.InTax);
-                            command.Parameters.AddWithValue("@Kingaku", invoice.Kingaku);
-                            command.Parameters.AddWithValue("@Biko", invoice.Biko);
+                                command.Parameters.AddWithValue("@No", invoice.No);
+                                command.Parameters.AddWithValue("@Year", invoice.Year);
+                                command.Parameters.AddWithValue("@Month", invoice.Month);
+                                command.Parameters.AddWithValue("@GenbaMei", invoice.GenbaMei);
+                                command.Parameters.AddWithValue("@ToCompany", invoice.ToCompany);
+                                command.Parameters.AddWithValue("@Manager", invoice.Manager);
+                                command.Parameters.AddWithValue("@Suryo", invoice.Suryo);
+                                command.Parameters.AddWithValue("@Tani", invoice.Tani);
+                                command.Parameters.AddWithValue("@Tanka", invoice.Tanka);
+                                command.Parameters.AddWithValue("@InTax", invoice.InTax);
+                                command.Parameters.AddWithValue("@Kingaku", invoice.Kingaku);
+                                command.Parameters.AddWithValue("@Biko", invoice.Biko);
+                                command.Parameters.AddWithValue("@CreateDT", DateTime.Now.ToString());
+                                //command.Parameters.AddWithValue("@CreateUser", );
 
-                            var sqlResult = command.ExecuteNonQuery();
+                                var sqlResult = command.ExecuteNonQuery();
 
-                            // クローズ
-                            conn.Close();
+                                // クローズ
+                                conn.Close();
+                            }
+                            catch (MySqlException ex)
+                            {
+                                System.Windows.MessageBox.Show(ex.InnerException.Message, "エラー", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK);
+                            }
                         }
-                        catch (MySqlException ex)
+                    }
+                    else
+                    {
+                        string sql = "UPDATE invoice SET SiteName = @Genbamei, Quantity = @Suryo, Unit = @Tani, UnitPrice = @Tanka, InTax = @InTax, Amount = @Kingaku, Remarks = @Biko WHERE No = @No AND Year = @Year AND Month = @Month AND ToCompany = @ToCompany AND Manager = @Manager";
+
+                        using (var conn = new MySqlConnection(common.ConnectionString))
+                        using (var command = new MySqlCommand(sql, conn))
                         {
-                            System.Windows.MessageBox.Show(ex.InnerException.Message, "エラー", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK);
+                            try
+                            {
+                                // 接続
+                                conn.Open();
+
+                                command.Connection = conn;
+                                command.CommandText = sql;
+
+                                command.Parameters.AddWithValue("@GenbaMei", invoice.GenbaMei);
+                                command.Parameters.AddWithValue("@Suryo", invoice.Suryo);
+                                command.Parameters.AddWithValue("@Tani", invoice.Tani);
+                                command.Parameters.AddWithValue("@Tanka", invoice.Tanka);
+                                command.Parameters.AddWithValue("@InTax", invoice.InTax);
+                                command.Parameters.AddWithValue("@Kingaku", invoice.Kingaku);
+                                command.Parameters.AddWithValue("@Biko", invoice.Biko);
+                                command.Parameters.AddWithValue("@No", invoice.No);
+                                command.Parameters.AddWithValue("@Year", invoice.Year);
+                                command.Parameters.AddWithValue("@Month", invoice.Month);
+                                command.Parameters.AddWithValue("@ToCompany", invoice.ToCompany);
+                                command.Parameters.AddWithValue("@Manager", invoice.Manager);
+
+                                var sqlResult = command.ExecuteNonQuery();
+
+                                // クローズ
+                                conn.Close();
+                            }
+                            catch (MySqlException ex)
+                            {
+                                System.Windows.MessageBox.Show(ex.InnerException.Message, "エラー", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK);
+                            }
                         }
                     }
                 }
@@ -373,6 +470,7 @@ namespace Wing.View
 
             InvoiceViewModel invoice = gridRow.Item as InvoiceViewModel;
 
+            UpdateFlagSign.IsChecked = true;
             NoText.Text = invoice.No.ToString();
             GenbaMeiText.Text = invoice.GenbaMei.ToString();
             SuryoText.Text = invoice.Suryo.ToString();
@@ -397,6 +495,7 @@ namespace Wing.View
 
         private void Clear_Click(object sender, RoutedEventArgs e)
         {
+            UpdateFlagSign.IsChecked = false;
             GenbaMeiText.Text = "";
             SuryoText.Text = "";
             TaniText.Text = "";
