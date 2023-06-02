@@ -22,6 +22,11 @@ namespace Wing.View
     {
         public string UserId;
 
+        public CategoryMenu()
+        {
+
+        }
+
         public CategoryMenu(string userId)
         {
             UserId = userId;
@@ -39,7 +44,7 @@ namespace Wing.View
 
         private void InvoiceClick(object sender, RoutedEventArgs e)
         {
-            Invoice invoice = new Invoice(UserNameText.Text.ToString());
+            Invoice invoice = new Invoice(UserNameText.Text.ToString(), this);
             invoice.Show();
             Hide();
         }

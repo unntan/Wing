@@ -29,9 +29,11 @@ namespace Wing.View
     public partial class Invoice : Window
     {
         public string UserName = "";
+        public CategoryMenu categoryMenu01 = new CategoryMenu();
 
-        public Invoice(string userName)
+        public Invoice(string userName,CategoryMenu categoryMenu)
         {
+            categoryMenu01 = categoryMenu;
             UserName = userName;
             InitializeComponent();
         }
@@ -116,15 +118,7 @@ namespace Wing.View
                 // データ追加処理
 
                 // 画面の情報から金額を算出する
-                if ((bool)InTax.IsChecked)
-                {
-                    Kingaku = Double.Parse(SuryoText.Text) * Double.Parse(TankaText.Text);
-                    Kingaku = Kingaku + Math.Round(Kingaku * tax);
-                }
-                else
-                {
-                    Kingaku = Double.Parse(SuryoText.Text) * Double.Parse(TankaText.Text);
-                }
+                Kingaku = Double.Parse(SuryoText.Text) * Double.Parse(TankaText.Text);
 
                 InvoiceList.AutoGenerateColumns = false;
 
@@ -263,7 +257,7 @@ namespace Wing.View
                         Tanka.Value = lst[i - 11].Tanka;
 
                         // 税判定
-                        if (lst[i - 11].InTax)
+                        if (!lst[i - 11].InTax)
                         {
                             // 税額算出
                             sumOutTax += lst[i - 11].Tanka * lst[i - 11].Suryo * tax;
@@ -368,7 +362,7 @@ namespace Wing.View
                                 command.Parameters.AddWithValue("@Kingaku", invoice.Kingaku);
                                 command.Parameters.AddWithValue("@Biko", invoice.Biko);
                                 command.Parameters.AddWithValue("@CreateDT", DateTime.Now.ToString());
-                                //command.Parameters.AddWithValue("@CreateUser", );
+                                command.Parameters.AddWithValue("@CreateUser", UserId.Text);
 
                                 var sqlResult = command.ExecuteNonQuery();
 
@@ -383,7 +377,7 @@ namespace Wing.View
                     }
                     else
                     {
-                        string sql = "UPDATE invoice SET SiteName = @Genbamei, Quantity = @Suryo, Unit = @Tani, UnitPrice = @Tanka, InTax = @InTax, Amount = @Kingaku, Remarks = @Biko WHERE No = @No AND Year = @Year AND Month = @Month AND ToCompany = @ToCompany AND Manager = @Manager";
+                        string sql = "UPDATE invoice SET SiteName = @Genbamei, Quantity = @Suryo, Unit = @Tani, UnitPrice = @Tanka, InTax = @InTax, Amount = @Kingaku, Remarks = @Biko WHERE No = @No AND Year = @Year AND Month = @Month AND ToCompany = @ToCompany AND Manager = @Manager AND UpdateDateTime = @datetime AND UpdateUser = @user";
 
                         using (var conn = new MySqlConnection(common.ConnectionString))
                         using (var command = new MySqlCommand(sql, conn))
@@ -408,6 +402,8 @@ namespace Wing.View
                                 command.Parameters.AddWithValue("@Month", invoice.Month);
                                 command.Parameters.AddWithValue("@ToCompany", invoice.ToCompany);
                                 command.Parameters.AddWithValue("@Manager", invoice.Manager);
+                                command.Parameters.AddWithValue("@datetime", DateTime.Now.ToString());
+                                command.Parameters.AddWithValue("@user", UserId.Text);
 
                                 var sqlResult = command.ExecuteNonQuery();
 
@@ -554,13 +550,14 @@ namespace Wing.View
             InvoiceLogic logic = new InvoiceLogic();
             invoices = logic.GetInvoices(int.Parse(KaisyaID.Text), int.Parse(TantoID.Text), int.Parse(YearText.Text), int.Parse(MonthText.Text));
 
-            InvoiceViewModel invoiceViewModel = new InvoiceViewModel();
             ObservableCollection<InvoiceViewModel> invoiceViewModels = new ObservableCollection<InvoiceViewModel>();
 
             if (invoices.Count != 0)
             {
                 for (int i = 0; i < invoices.Count; i++)
                 {
+                    InvoiceViewModel invoiceViewModel = new InvoiceViewModel();
+
                     invoiceViewModel.No = invoices[i].No;
                     invoiceViewModel.Year = invoices[i].Year;
                     invoiceViewModel.Month = invoices[i].Month;
@@ -611,6 +608,11 @@ namespace Wing.View
             dataList.Remove(item);
 
             System.Windows.Forms.MessageBox.Show("データを削除しました。");
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            categoryMenu01.Show();
         }
     }
 }
