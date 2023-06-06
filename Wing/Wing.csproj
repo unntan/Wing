@@ -151,6 +151,7 @@
     </ApplicationDefinition>
     <Compile Include="Logic\InvoiceLogic.cs" />
     <Compile Include="Logic\ManagerListWindowData.cs" />
+    <Compile Include="Logic\ParkingFeeLogic.cs" />
     <Compile Include="Logic\TaxLogic.cs" />
     <Compile Include="Model\Company.cs" />
     <Compile Include="Logic\CompanyListWindowData.cs" />

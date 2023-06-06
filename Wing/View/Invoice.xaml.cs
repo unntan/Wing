@@ -296,6 +296,10 @@ namespace Wing.View
                 Range InvoiceDate = sheet.Cells[2, 10];
                 InvoiceDate.Value = InvoiceDateText.Text;
 
+                // 駐車料金
+                Range ParkingFee = sheet.Cells[21, 8];
+                ParkingFee.Value = ParkingFeeText.Text;
+
                 workbook.SaveCopyAs(SavePath.Text + "\\" + SaveFileName.Text);
 
                 System.Windows.MessageBox.Show("請求書を発行しました。", "お知らせ");
@@ -327,7 +331,6 @@ namespace Wing.View
             {
                 for (int item = 0; item < InvoiceList.Items.Count; item++)
                 {
-                    // 更新処理を入れる
                     DataGridRow row = InvoiceList.ItemContainerGenerator.ContainerFromIndex(item) as DataGridRow;
 
                     InvoiceViewModel invoice = row.Item as InvoiceViewModel;
@@ -546,8 +549,9 @@ namespace Wing.View
         private void GetInvoiceData_Click(object sender, RoutedEventArgs e)
         {
             ObservableCollection<Model.Invoice> invoices = new ObservableCollection<Model.Invoice>();
-
+            double parkingFee = 0;
             InvoiceLogic logic = new InvoiceLogic();
+            ParkingFeeLogic parkingFeeLogic = new ParkingFeeLogic();
             invoices = logic.GetInvoices(int.Parse(KaisyaID.Text), int.Parse(TantoID.Text), int.Parse(YearText.Text), int.Parse(MonthText.Text));
 
             ObservableCollection<InvoiceViewModel> invoiceViewModels = new ObservableCollection<InvoiceViewModel>();
@@ -575,6 +579,11 @@ namespace Wing.View
                 }
 
                 InvoiceList.ItemsSource = invoiceViewModels;
+
+                parkingFee = parkingFeeLogic.GetParkingFee(int.Parse(KaisyaID.Text), int.Parse(TantoID.Text), int.Parse(YearText.Text), int.Parse(MonthText.Text));
+
+                ParkingFeeText.Text = parkingFee.ToString();
+
             }
             else
             {

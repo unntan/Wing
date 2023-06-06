@@ -24,6 +24,11 @@ namespace Wing.Logic
 
                 using (var command = new MySqlCommand(sql, conn))
                 {
+                    command.Parameters.AddWithValue("@Year", year);
+                    command.Parameters.AddWithValue("@Month", month);
+                    command.Parameters.AddWithValue("@ToCompany", kaisyaId);
+                    command.Parameters.AddWithValue("@Manager", tantoId);
+
                     using (var reader = command.ExecuteReader())
                     {
                         dataTable.Load(reader);
