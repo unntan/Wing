@@ -116,19 +116,18 @@
             </Grid.RowDefinitions>
 
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="200"/>
                 <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="200"/>
                 <ColumnDefinition Width="150"/>
                 <ColumnDefinition Width="150"/>
             </Grid.ColumnDefinitions>
 
-            <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Top" VerticalContentAlignment="Center">保存パス</Label>
-            <TextBox Name="SavePath" Width="130" Height="30" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Top"/>
-            <Button Name="SavePathSelect" Grid.Row="1" Grid.Column="1" Width="75" Click="SavePath_Click" Height="30" VerticalAlignment="Top">保存先選択</Button>
-            <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Left" VerticalAlignment="Bottom" VerticalContentAlignment="Center">ファイル名</Label>
-            <TextBox Name="SaveFileName" Width="130" Height="30" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Right" VerticalAlignment="Bottom"/>
-            <Button Name="Save" Grid.Row="1" Grid.Column="3" Click="Save_Click" Height="60" Width="120" ToolTip="リストに表示されているデータをデータベースに保存します。">データ保存</Button>
-            <Button Name="Output" Grid.Row="1" Grid.Column="2" Click="Output_Click" Height="60" Width="120">請求書出力</Button>
+            <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Top" VerticalContentAlignment="Center">保存パス</Label>
+            <TextBox Name="SavePath" Width="200" Height="30" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Top"/>
+            <Button Name="SavePathSelect" Grid.Row="1" Grid.Column="2" Width="75" Click="SavePath_Click" Height="30" VerticalAlignment="Top">保存先選択</Button>
+            <Label Grid.Row="1" Grid.Column="0" HorizontalAlignment="Center" VerticalAlignment="Bottom" VerticalContentAlignment="Center">ファイル名</Label>
+            <TextBox Name="SaveFileName" Width="200" Height="30" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
+            <Button Name="Output" Grid.Row="1" Grid.Column="3" Click="Output_Click" Height="60" Width="120">請求書出力</Button>
         </Grid>
 
         <Button Name="Accept" Grid.Row="11" Grid.Column="1" Click="Accept_Click" Height="60" Width="120" ToolTip="「現場名」「数量」「単位」「備考」を画面右のリストに追加します。">リストに追加</Button>

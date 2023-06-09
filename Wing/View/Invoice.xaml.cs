@@ -322,109 +322,109 @@ namespace Wing.View
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void Save_Click(object sender, RoutedEventArgs e)
-        {
+        //private void Save_Click(object sender, RoutedEventArgs e)
+        //{
 
-            MessageBoxResult result = System.Windows.MessageBox.Show("表示されているデータを保存してもよろしいですか？", "保存", MessageBoxButton.OKCancel, MessageBoxImage.Question, MessageBoxResult.Cancel);
+        //    MessageBoxResult result = System.Windows.MessageBox.Show("表示されているデータを保存してもよろしいですか？", "保存", MessageBoxButton.OKCancel, MessageBoxImage.Question, MessageBoxResult.Cancel);
 
-            if (result == MessageBoxResult.OK)
-            {
-                for (int item = 0; item < InvoiceList.Items.Count; item++)
-                {
-                    DataGridRow row = InvoiceList.ItemContainerGenerator.ContainerFromIndex(item) as DataGridRow;
+        //    if (result == MessageBoxResult.OK)
+        //    {
+        //        for (int item = 0; item < InvoiceList.Items.Count; item++)
+        //        {
+        //            DataGridRow row = InvoiceList.ItemContainerGenerator.ContainerFromIndex(item) as DataGridRow;
 
-                    InvoiceViewModel invoice = row.Item as InvoiceViewModel;
+        //            InvoiceViewModel invoice = row.Item as InvoiceViewModel;
 
-                    Common common = new Common();
+        //            Common common = new Common();
 
-                    if (!invoice.UpdateFlag)
-                    {
-                        string sql = "INSERT INTO invoice (No, Year, Month, ToCompany, Manager, SiteName, Quantity, Unit, UnitPrice, InTax, Amount, Remarks, CreateDateTime, CreateUser) VALUES (@No, @Year, @Month,  @ToCompany, @Manager, @GenbaMei, @Suryo, @Tani, @Tanka, @InTax, @Kingaku, @Biko, @CreateDT, @CreateUser)";
+        //            if (!invoice.UpdateFlag)
+        //            {
+        //                string sql = "INSERT INTO invoice (No, Year, Month, ToCompany, Manager, SiteName, Quantity, Unit, UnitPrice, InTax, Amount, Remarks, CreateDateTime, CreateUser) VALUES (@No, @Year, @Month,  @ToCompany, @Manager, @GenbaMei, @Suryo, @Tani, @Tanka, @InTax, @Kingaku, @Biko, @CreateDT, @CreateUser)";
 
-                        using (var conn = new MySqlConnection(common.ConnectionString))
-                        using (var command = new MySqlCommand(sql, conn))
-                        {
-                            try
-                            {
-                                // 接続
-                                conn.Open();
+        //                using (var conn = new MySqlConnection(common.ConnectionString))
+        //                using (var command = new MySqlCommand(sql, conn))
+        //                {
+        //                    try
+        //                    {
+        //                        // 接続
+        //                        conn.Open();
 
-                                command.Connection = conn;
-                                command.CommandText = sql;
+        //                        command.Connection = conn;
+        //                        command.CommandText = sql;
 
-                                command.Parameters.AddWithValue("@No", invoice.No);
-                                command.Parameters.AddWithValue("@Year", invoice.Year);
-                                command.Parameters.AddWithValue("@Month", invoice.Month);
-                                command.Parameters.AddWithValue("@GenbaMei", invoice.GenbaMei);
-                                command.Parameters.AddWithValue("@ToCompany", invoice.ToCompany);
-                                command.Parameters.AddWithValue("@Manager", invoice.Manager);
-                                command.Parameters.AddWithValue("@Suryo", invoice.Suryo);
-                                command.Parameters.AddWithValue("@Tani", invoice.Tani);
-                                command.Parameters.AddWithValue("@Tanka", invoice.Tanka);
-                                command.Parameters.AddWithValue("@InTax", invoice.InTax);
-                                command.Parameters.AddWithValue("@Kingaku", invoice.Kingaku);
-                                command.Parameters.AddWithValue("@Biko", invoice.Biko);
-                                command.Parameters.AddWithValue("@CreateDT", DateTime.Now.ToString());
-                                command.Parameters.AddWithValue("@CreateUser", UserId.Text);
+        //                        command.Parameters.AddWithValue("@No", invoice.No);
+        //                        command.Parameters.AddWithValue("@Year", invoice.Year);
+        //                        command.Parameters.AddWithValue("@Month", invoice.Month);
+        //                        command.Parameters.AddWithValue("@GenbaMei", invoice.GenbaMei);
+        //                        command.Parameters.AddWithValue("@ToCompany", invoice.ToCompany);
+        //                        command.Parameters.AddWithValue("@Manager", invoice.Manager);
+        //                        command.Parameters.AddWithValue("@Suryo", invoice.Suryo);
+        //                        command.Parameters.AddWithValue("@Tani", invoice.Tani);
+        //                        command.Parameters.AddWithValue("@Tanka", invoice.Tanka);
+        //                        command.Parameters.AddWithValue("@InTax", invoice.InTax);
+        //                        command.Parameters.AddWithValue("@Kingaku", invoice.Kingaku);
+        //                        command.Parameters.AddWithValue("@Biko", invoice.Biko);
+        //                        command.Parameters.AddWithValue("@CreateDT", DateTime.Now.ToString());
+        //                        command.Parameters.AddWithValue("@CreateUser", UserId.Text);
 
-                                var sqlResult = command.ExecuteNonQuery();
+        //                        var sqlResult = command.ExecuteNonQuery();
 
-                                // クローズ
-                                conn.Close();
-                            }
-                            catch (MySqlException ex)
-                            {
-                                System.Windows.MessageBox.Show(ex.InnerException.Message, "エラー", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK);
-                            }
-                        }
-                    }
-                    else
-                    {
-                        string sql = "UPDATE invoice SET SiteName = @Genbamei, Quantity = @Suryo, Unit = @Tani, UnitPrice = @Tanka, InTax = @InTax, Amount = @Kingaku, Remarks = @Biko WHERE No = @No AND Year = @Year AND Month = @Month AND ToCompany = @ToCompany AND Manager = @Manager AND UpdateDateTime = @datetime AND UpdateUser = @user";
+        //                        // クローズ
+        //                        conn.Close();
+        //                    }
+        //                    catch (MySqlException ex)
+        //                    {
+        //                        System.Windows.MessageBox.Show(ex.InnerException.Message, "エラー", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK);
+        //                    }
+        //                }
+        //            }
+        //            else
+        //            {
+        //                string sql = "UPDATE invoice SET SiteName = @Genbamei, Quantity = @Suryo, Unit = @Tani, UnitPrice = @Tanka, InTax = @InTax, Amount = @Kingaku, Remarks = @Biko WHERE No = @No AND Year = @Year AND Month = @Month AND ToCompany = @ToCompany AND Manager = @Manager AND UpdateDateTime = @datetime AND UpdateUser = @user";
 
-                        using (var conn = new MySqlConnection(common.ConnectionString))
-                        using (var command = new MySqlCommand(sql, conn))
-                        {
-                            try
-                            {
-                                // 接続
-                                conn.Open();
+        //                using (var conn = new MySqlConnection(common.ConnectionString))
+        //                using (var command = new MySqlCommand(sql, conn))
+        //                {
+        //                    try
+        //                    {
+        //                        // 接続
+        //                        conn.Open();
 
-                                command.Connection = conn;
-                                command.CommandText = sql;
+        //                        command.Connection = conn;
+        //                        command.CommandText = sql;
 
-                                command.Parameters.AddWithValue("@GenbaMei", invoice.GenbaMei);
-                                command.Parameters.AddWithValue("@Suryo", invoice.Suryo);
-                                command.Parameters.AddWithValue("@Tani", invoice.Tani);
-                                command.Parameters.AddWithValue("@Tanka", invoice.Tanka);
-                                command.Parameters.AddWithValue("@InTax", invoice.InTax);
-                                command.Parameters.AddWithValue("@Kingaku", invoice.Kingaku);
-                                command.Parameters.AddWithValue("@Biko", invoice.Biko);
-                                command.Parameters.AddWithValue("@No", invoice.No);
-                                command.Parameters.AddWithValue("@Year", invoice.Year);
-                                command.Parameters.AddWithValue("@Month", invoice.Month);
-                                command.Parameters.AddWithValue("@ToCompany", invoice.ToCompany);
-                                command.Parameters.AddWithValue("@Manager", invoice.Manager);
-                                command.Parameters.AddWithValue("@datetime", DateTime.Now.ToString());
-                                command.Parameters.AddWithValue("@user", UserId.Text);
+        //                        command.Parameters.AddWithValue("@GenbaMei", invoice.GenbaMei);
+        //                        command.Parameters.AddWithValue("@Suryo", invoice.Suryo);
+        //                        command.Parameters.AddWithValue("@Tani", invoice.Tani);
+        //                        command.Parameters.AddWithValue("@Tanka", invoice.Tanka);
+        //                        command.Parameters.AddWithValue("@InTax", invoice.InTax);
+        //                        command.Parameters.AddWithValue("@Kingaku", invoice.Kingaku);
+        //                        command.Parameters.AddWithValue("@Biko", invoice.Biko);
+        //                        command.Parameters.AddWithValue("@No", invoice.No);
+        //                        command.Parameters.AddWithValue("@Year", invoice.Year);
+        //                        command.Parameters.AddWithValue("@Month", invoice.Month);
+        //                        command.Parameters.AddWithValue("@ToCompany", invoice.ToCompany);
+        //                        command.Parameters.AddWithValue("@Manager", invoice.Manager);
+        //                        command.Parameters.AddWithValue("@datetime", DateTime.Now.ToString());
+        //                        command.Parameters.AddWithValue("@user", UserId.Text);
 
-                                var sqlResult = command.ExecuteNonQuery();
+        //                        var sqlResult = command.ExecuteNonQuery();
 
-                                // クローズ
-                                conn.Close();
-                            }
-                            catch (MySqlException ex)
-                            {
-                                System.Windows.MessageBox.Show(ex.InnerException.Message, "エラー", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK);
-                            }
-                        }
-                    }
-                }
+        //                        // クローズ
+        //                        conn.Close();
+        //                    }
+        //                    catch (MySqlException ex)
+        //                    {
+        //                        System.Windows.MessageBox.Show(ex.InnerException.Message, "エラー", MessageBoxButton.OK, MessageBoxImage.Error, MessageBoxResult.OK);
+        //                    }
+        //                }
+        //            }
+        //        }
 
-                System.Windows.MessageBox.Show("データを保存しました。", "保存", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK);
+        //        System.Windows.MessageBox.Show("データを保存しました。", "保存", MessageBoxButton.OK, MessageBoxImage.Information, MessageBoxResult.OK);
 
-            }
-        }
+        //    }
+        //}
 
         /// <summary>
         /// 保存先指定ボタンクリック時処理
